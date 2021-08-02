@@ -2,31 +2,31 @@ resource "kubernetes_deployment" "deployment" {
   metadata {
     name = data.ns_workspace.this.block_ref
     labels = {
-      app = local.service_name
+      app = data.ns_workspace.this.block_name
     }
   }
 
   # Pods specs
   spec {
-    replicas = var.pods_replica_count
+    replicas = var.service_count
 
     selector {
       match_labels = {
-        app = local.service_name
+        app = data.ns_workspace.this.block_name
       }
     }
 
     template {
       metadata {
         labels = {
-          app = local.service_name
+          app = data.ns_workspace.this.block_name
         }
       }
 
       spec {
         container {
           image = "${local.service_image}:${local.app_version}"
-          name  = local.service_name
+          name  = data.ns_workspace.this.block_name
 
           resources {
             limits = {

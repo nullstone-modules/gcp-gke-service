@@ -7,7 +7,6 @@ resource "random_string" "resource_suffix" {
 }
 
 locals {
-  service_name  = var.service_name != "" ? var.service_name : "${data.ns_workspace.this.block_ref}"
   service_image = var.service_image != "" ? var.service_image : "${data.google_container_registry_image.image.image_url}"
 }
 

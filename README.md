@@ -3,10 +3,6 @@ Nullstone module to launch a GKE container on GCP.
 
 ## Inputs
 
-- `service_name: string`
-  - Name of service.
-  - Default: `""`
-
 - `service_memory: string`
   - Allocated memory to pods.
   - Default: `"512Mi"`
@@ -15,11 +11,11 @@ Nullstone module to launch a GKE container on GCP.
   - Allocated cpu to pods.
   - Default: `"0.5"`
 
-- `pods_replica_count: number`
+- `service_count: number`
   - The number of desired pods replicas.
   - Default: `1`
 
-- `container_port: number`
+- `service_port: number`
   - The port that will be exposed by this service.
   - Default: `80`
 

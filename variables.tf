@@ -1,9 +1,3 @@
-variable "service_name" {
-  type        = string
-  description = "Name of service."
-  default     = ""
-}
-
 variable "service_image" {
   type        = string
   description = "Service container image url."
@@ -22,13 +16,13 @@ variable "service_cpu" {
   default     = "0.5"
 }
 
-variable "pods_replica_count" {
+variable "service_count" {
   type        = number
   description = "The number of desired pods replicas."
   default     = 1
 }
 
-variable "container_port" {
+variable "service_port" {
   type        = number
   description = "The port that will be exposed by this service."
   default     = 80
