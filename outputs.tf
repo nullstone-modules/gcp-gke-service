@@ -28,3 +28,21 @@ output "image_pusher" {
 
   sensitive = true
 }
+
+output "main_container_name" {
+  value       = local.main_container_name
+  description = "string ||| The name of the container definition for the main service container"
+}
+
+locals {
+  additional_private_urls = []
+  additional_public_urls  = []
+}
+
+output "private_urls" {
+  value = concat([for url in try(local.capabilities.private_urls, []) : url["url"]], local.additional_private_urls)
+}
+
+output "public_urls" {
+  value = concat([for url in try(local.capabilities.public_urls, []) : url["url"]], local.additional_public_urls)
+}
