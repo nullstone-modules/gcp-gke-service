@@ -1,6 +1,6 @@
 resource "kubernetes_deployment" "deployment" {
   metadata {
-    name = data.ns_workspace.this.block_ref
+    name = local.app_name
 
     labels = {
       stack = data.ns_workspace.this.stack_name
