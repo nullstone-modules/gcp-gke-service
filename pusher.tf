@@ -1,5 +1,5 @@
 resource "google_service_account" "image_pusher" {
-  account_id   = "image-pusher-${local.resource_name}"
+  account_id   = "pusher-${local.resource_name}"
   display_name = "Image Pusher for ${local.app_name}"
 
   count = var.service_image == "" ? 1 : 0
