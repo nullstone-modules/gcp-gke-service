@@ -47,6 +47,20 @@ resource "kubernetes_deployment" "deployment" {
             }
           }
 
+          dynamic "env" {
+            for_each = local.app_secrets
+
+            content {
+              name = env.key
+
+              value_from {
+                secret_key_ref {
+                  name = env.value
+                }
+              }
+            }
+          }
+
           resources {
             limits = {
               cpu    = var.service_cpu
