@@ -2,7 +2,7 @@ locals {
   main_container_name = "main"
 }
 
-resource "kubernetes_deployment" "deployment" {
+resource "kubernetes_deployment" "this" {
   metadata {
     name = local.app_name
 
@@ -35,8 +35,8 @@ resource "kubernetes_deployment" "deployment" {
 
       spec {
         container {
-          image = "${local.service_image}:${local.app_version}"
           name  = local.main_container_name
+          image = "${local.service_image}:${local.app_version}"
 
           dynamic "env" {
             for_each = local.env_vars

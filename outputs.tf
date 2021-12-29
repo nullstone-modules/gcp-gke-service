@@ -14,7 +14,7 @@ output "service_image" {
 }
 
 output "service_name" {
-  value       = kubernetes_deployment.deployment.metadata.name
+  value       = local.app_name
   description = "string ||| "
 }
 
