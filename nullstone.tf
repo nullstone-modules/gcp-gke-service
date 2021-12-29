@@ -12,3 +12,8 @@ data "ns_connection" "cluster" {
   name = "cluster"
   type = "cluster/gcp-gke"
 }
+
+locals {
+  cluster_endpoint       = data.ns_connection.cluster.outputs.cluster_endpoint
+  cluster_ca_certificate = data.ns_connection.cluster.outputs.cluster_ca_certificate
+}
