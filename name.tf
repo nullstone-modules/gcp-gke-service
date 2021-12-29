@@ -7,6 +7,6 @@ resource "random_string" "resource_suffix" {
 }
 
 locals {
-  service_image = var.service_image != "" ? var.service_image : "${data.google_container_registry_image.image.image_url}"
+  service_image = var.service_image != "" ? var.service_image : "${data.google_container_registry_image.this.image_url}"
 }
 

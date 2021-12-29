@@ -1,0 +1,36 @@
+{{ range . -}}
+provider "ns" {
+  capability_id = {{ .Id }}
+  alias         = "cap_{{ .Id }}"
+}
+
+module "{{ .TfModuleName }}" {
+  source  = "{{ .Source }}/any"
+  {{ if (ne .SourceVersion "latest") }}version = "{{ .SourceVersion }}"{{ end }}
+
+  app_metadata = {
+  }
+
+  {{- range $key, $value := .Variables }}
+  {{ if not $value.Unused -}}
+  {{ $key }} = jsondecode({{ $value.Value | to_json_string }})
+  {{- end }}{{ end }}
+
+  providers = {
+    ns = ns.cap_{{ .Id}}
+  }
+}
+{{ end }}
+module "caps" {
+  source  = "nullstone-modules/cap-merge/ns"
+  modules = local.modules
+}
+
+locals {
+  modules       = [
+{{- range $index, $element := .ExceptNeedsDestroyed.TfModuleAddrs -}}
+{{ if $index }}, {{ end }}{{ $element }}
+{{- end -}}
+]
+  capabilities  = module.caps.outputs
+}
