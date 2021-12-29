@@ -3,6 +3,8 @@ locals {
 }
 
 resource "kubernetes_deployment" "this" {
+  wait_for_rollout = false
+
   metadata {
     name = local.app_name
 

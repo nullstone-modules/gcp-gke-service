@@ -8,11 +8,6 @@ output "log_provider" {
   description = "string ||| The log provider used for this service."
 }
 
-output "service_image" {
-  value       = "${local.service_image}:${local.app_version}"
-  description = "string ||| "
-}
-
 output "service_name" {
   value       = local.app_name
   description = "string ||| "

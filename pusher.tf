@@ -7,7 +7,7 @@ resource "google_service_account" "image_pusher" {
 
 resource "google_storage_bucket_iam_member" "service_push_image" {
   bucket = google_container_registry.registry.id
-  role   = "role/storage.legacyBucketWriter"
+  role   = "roles/storage.legacyBucketWriter"
   member = "serviceAccount:${google_service_account.image_pusher[count.index].email}"
 
   count = var.service_image == "" ? 1 : 0
