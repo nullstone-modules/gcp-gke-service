@@ -1,8 +1,18 @@
-resource "kubernetes_deployment" "deployment" {
+locals {
+  main_container_name = "main"
+}
+
+resource "kubernetes_deployment" "this" {
+  wait_for_rollout = false
+
   metadata {
-    name = data.ns_workspace.this.block_ref
+    name      = local.app_name
+    namespace = local.app_namespace
+
     labels = {
-      app = data.ns_workspace.this.block_name
+      stack = data.ns_workspace.this.stack_name
+      env   = data.ns_workspace.this.env_name
+      app   = local.app_name
     }
   }
 
@@ -12,21 +22,47 @@ resource "kubernetes_deployment" "deployment" {
 
     selector {
       match_labels = {
-        app = data.ns_workspace.this.block_name
+        app = local.app_name
       }
     }
 
     template {
       metadata {
         labels = {
-          app = data.ns_workspace.this.block_name
+          ref   = data.ns_workspace.this.block_ref
+          stack = data.ns_workspace.this.stack_name
+          env   = data.ns_workspace.this.env_name
+          app   = local.app_name
         }
       }
 
       spec {
         container {
+          name  = local.main_container_name
           image = "${local.service_image}:${local.app_version}"
-          name  = data.ns_workspace.this.block_name
+
+          dynamic "env" {
+            for_each = local.env_vars
+
+            content {
+              name  = env.key
+              value = env.value
+            }
+          }
+
+          dynamic "env" {
+            for_each = local.app_secrets
+
+            content {
+              name = env.key
+
+              value_from {
+                secret_key_ref {
+                  name = env.value
+                }
+              }
+            }
+          }
 
           resources {
             limits = {
