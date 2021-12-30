@@ -37,5 +37,8 @@ resource "kubernetes_secret" "app_secret" {
     labels = data.ns_workspace.this.tags
   }
 
-  data = local.cap_secrets[each.value]
+  type = "Opaque"
+  data = {
+    value = local.cap_secrets[each.value]
+  }
 }
