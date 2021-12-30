@@ -6,7 +6,8 @@ resource "kubernetes_deployment" "this" {
   wait_for_rollout = false
 
   metadata {
-    name = local.app_name
+    name      = local.app_name
+    namespace = local.app_namespace
 
     labels = {
       stack = data.ns_workspace.this.stack_name

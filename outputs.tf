@@ -10,7 +10,12 @@ output "log_provider" {
 
 output "service_name" {
   value       = local.app_name
-  description = "string ||| "
+  description = "string ||| The name of the kubernetes deployment for the app."
+}
+
+output "service_namespace" {
+  value       = local.app_namespace
+  description = "string ||| The kubernetes namespace where the app resides."
 }
 
 output "image_pusher" {
@@ -19,7 +24,7 @@ output "image_pusher" {
     private_key = try(google_service_account_key.image_pusher[0].private_key, "")
   }
 
-  description = "object({ email: string, private_key: string }) ||| A GCP service account containing a base64-encoded JSON private key file."
+  description = "object({ email: string, private_key: string }) ||| A GCP service account that is allowed to push images."
 
   sensitive = true
 }

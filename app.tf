@@ -5,6 +5,7 @@ data "ns_app_env" "this" {
 }
 
 locals {
-  app_name    = data.ns_workspace.this.block_name
-  app_version = data.ns_app_env.this.version
+  app_namespace = "default"
+  app_name      = data.ns_workspace.this.block_name
+  app_version   = data.ns_app_env.this.version
 }
