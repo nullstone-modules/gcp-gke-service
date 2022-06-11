@@ -8,8 +8,7 @@ module "{{ .TfModuleName }}" {
   source  = "{{ .Source }}/any"
   {{ if (ne .SourceVersion "latest") }}version = "{{ .SourceVersion }}"{{ end }}
 
-  app_metadata = {
-  }
+  app_metadata = local.app_metadata
 
   {{- range $key, $value := .Variables }}
   {{ if not $value.Unused -}}

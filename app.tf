@@ -9,3 +9,9 @@ locals {
   app_name      = data.ns_workspace.this.block_name
   app_version   = data.ns_app_env.this.version
 }
+
+locals {
+  app_metadata = tomap({
+    // Inject app metadata into capabilities here (e.g. security_group_name, role_name)
+  })
+}

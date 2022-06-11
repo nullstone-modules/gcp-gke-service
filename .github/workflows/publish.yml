@@ -19,7 +19,7 @@ jobs:
 
       # Package files into tgz
       - name: Package
-        run: tar -cvzf module.tgz *.tf *.tf.tmpl
+        run: tar -cvzf module.tgz *.tf *.tf.tmpl README.md
 
       - name: Find version
         id: version
