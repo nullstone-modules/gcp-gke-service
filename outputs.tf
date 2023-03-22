@@ -20,8 +20,8 @@ output "service_namespace" {
 
 output "image_pusher" {
   value = {
-    email       = try(google_service_account.image_pusher[0].email, "")
-    private_key = try(google_service_account_key.image_pusher[0].private_key, "")
+    email       = try(google_service_account.image_pusher.email, "")
+    private_key = try(google_service_account_key.image_pusher.private_key, "")
   }
 
   description = "object({ email: string, private_key: string }) ||| A GCP service account that is allowed to push images."

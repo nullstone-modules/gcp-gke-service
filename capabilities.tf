@@ -1,5 +1,17 @@
 // This file is replaced by code-generation using 'capabilities.tf.tmpl'
 locals {
+  cap_modules = [
+    {
+      id         = 0
+      namespace  = ""
+      env_prefix = ""
+      outputs    = {}
+    }
+  ]
+
+  cap_env_vars = {}
+  cap_secrets  = {}
+
   capabilities = {
     env = [
       {

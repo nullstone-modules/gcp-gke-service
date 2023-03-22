@@ -51,7 +51,7 @@ resource "kubernetes_deployment" "this" {
           }
 
           dynamic "env" {
-            for_each = local.app_secrets
+            for_each = local.secret_refs
 
             content {
               name = env.key
@@ -67,8 +67,8 @@ resource "kubernetes_deployment" "this" {
 
           resources {
             limits = {
-              cpu    = var.service_cpu
-              memory = var.service_memory
+              cpu    = var.cpu
+              memory = var.memory
             }
           }
         }
