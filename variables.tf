@@ -20,7 +20,7 @@ EOF
 }
 
 
-variable "service_count" {
+variable "replicas" {
   type        = number
   description = "The desired number of pod replicas to run."
   default     = 1
