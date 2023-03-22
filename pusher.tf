@@ -6,9 +6,9 @@ resource "google_service_account" "image_pusher" {
 resource "google_storage_bucket_iam_member" "service_push_image" {
   bucket = google_container_registry.registry.id
   role   = "roles/storage.legacyBucketWriter"
-  member = "serviceAccount:${google_service_account.image_pusher[count.index].email}"
+  member = "serviceAccount:${google_service_account.image_pusher.email}"
 }
 
 resource "google_service_account_key" "image_pusher" {
-  service_account_id = google_service_account.image_pusher[count.index].account_id
+  service_account_id = google_service_account.image_pusher.account_id
 }

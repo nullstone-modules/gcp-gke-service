@@ -1,6 +1,6 @@
 locals {
   // secret_refs is prepared in the form [{ name = "", valueFrom = "<arn>" }, ...] for injection into ECS services
-  secret_refs = { for key in local.secret_keys : name => google_secret_manager_secret.app_secret[name].id }
+  secret_refs = { for key in local.secret_keys : key => google_secret_manager_secret.app_secret[key].id }
 }
 
 
