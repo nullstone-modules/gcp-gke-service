@@ -1,13 +1,13 @@
 org_name: nullstone
 name: gcp-gke-service
-friendly_name: Kubernetes GKE Service
-description: Creates a GKE service backed by a Google Container Registry
+friendly_name: Kubernetes GKE App
+description: Creates a GKE app backed by Google Container Registry
 category: app
 subcategory: container
 provider_types:
     - gcp
-platform: gke
-subplatform: ""
+platform: k8s
+subplatform: gke
 type: ""
 appCategories: []
 is_public: true
