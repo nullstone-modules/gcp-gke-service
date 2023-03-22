@@ -10,3 +10,4 @@
   - `NULLSTONE_COMMIT_SHA`
   - `NULLSTONE_PUBLIC_HOSTS`
   - `NULLSTONE_PRIVATE_HOSTS`
+* Add `.terraform.lock.hcl`.
