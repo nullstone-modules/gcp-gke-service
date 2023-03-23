@@ -8,41 +8,46 @@ resource "kubernetes_deployment" "this" {
   metadata {
     name      = local.app_name
     namespace = local.app_namespace
-
-    labels = {
-      stack = data.ns_workspace.this.stack_name
-      env   = data.ns_workspace.this.env_name
-      app   = local.app_name
-    }
+    labels    = local.k8s_labels
   }
 
   # Pods specs
   spec {
-    replicas = var.service_count
+    replicas = var.replicas
 
     selector {
-      match_labels = {
-        app = local.app_name
-      }
+      match_labels = local.k8s_labels
     }
 
     template {
       metadata {
-        labels = {
-          ref   = data.ns_workspace.this.block_ref
-          stack = data.ns_workspace.this.stack_name
-          env   = data.ns_workspace.this.env_name
-          app   = local.app_name
-        }
+        labels = local.k8s_labels
       }
 
       spec {
+        restart_policy = "Always"
+
         container {
           name  = local.main_container_name
           image = "${local.service_image}:${local.app_version}"
 
+          resources {
+            limits = {
+              cpu    = var.cpu
+              memory = var.memory
+            }
+          }
+
+          dynamic "port" {
+            for_each = var.port > 0 ? [var.port] : []
+
+            content {
+              container_port = port.value
+            }
+          }
+
           dynamic "env" {
-            for_each = local.env_vars
+            for_each = local.all_env_vars
 
             content {
               name  = env.key
@@ -51,7 +56,7 @@ resource "kubernetes_deployment" "this" {
           }
 
           dynamic "env" {
-            for_each = local.app_secrets
+            for_each = local.secret_refs
 
             content {
               name = env.key
@@ -62,13 +67,6 @@ resource "kubernetes_deployment" "this" {
                   key  = "value"
                 }
               }
-            }
-          }
-
-          resources {
-            limits = {
-              cpu    = var.service_cpu
-              memory = var.service_memory
             }
           }
         }

@@ -1,14 +1,14 @@
-variable "service_image" {
+variable "cpu" {
   type        = string
-  default     = ""
+  default     = "0.5"
   description = <<EOF
-The docker image to deploy for this service.
-By default, this is blank, which means that a GCR repo is created and used.
-Use this variable to configure against docker hub, quay, etc.
+The amount of CPUs to request and limit the service.
+You can also specify milliCPU with a "m" suffix. For example, "0.5" equals "500m".
+By default, this is set to 0.5 CPU.
 EOF
 }
 
-variable "service_memory" {
+variable "memory" {
   type        = string
   default     = "512Mi"
   description = <<EOF
@@ -19,33 +19,14 @@ This means the default is 512 Mi or 0.5 Gi.
 EOF
 }
 
-variable "service_cpu" {
-  type        = string
-  default     = "0.5"
-  description = <<EOF
-The amount of CPUs to request and limit the service.
-You can also specify milliCPU with a "m" suffix. For example, "0.5" equals "500m".
-By default, this is set to 0.5 CPU.
-EOF
-}
 
-variable "service_count" {
+variable "replicas" {
   type        = number
   description = "The desired number of pod replicas to run."
   default     = 1
 }
 
-variable "service_env_vars" {
-  type        = map(string)
-  default     = {}
-  description = <<EOF
-The environment variables to inject into the service.
-These are typically used to configure a service per environment.
-It is dangerous to put sensitive information in this variable because they are not protected and could be unintentionally exposed.
-EOF
-}
-
-variable "service_port" {
+variable "port" {
   type        = number
   default     = 80
   description = <<EOF
