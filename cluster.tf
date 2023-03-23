@@ -1,6 +1,6 @@
 data "ns_connection" "cluster" {
   name     = "cluster"
-  contract = "cluster/gcp/k8s:gke" // TODO: Update module in db and .nullstone/module.yml in gcp-gke
+  contract = "cluster/gcp/k8s:gke"
 }
 
 locals {

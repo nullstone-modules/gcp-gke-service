@@ -1,3 +1,6 @@
+# 0.4.2 (Mar 22, 2023)
+* Use `"latest"` tag if there is no app version.
+
 # 0.4.1 (Mar 22, 2023)
 * Fix kubernetes provider host.
 
