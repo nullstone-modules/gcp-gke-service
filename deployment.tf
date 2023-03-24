@@ -8,7 +8,7 @@ resource "kubernetes_deployment" "this" {
   metadata {
     name      = local.app_name
     namespace = local.app_namespace
-    labels    = local.k8s_labels
+    labels    = local.app_labels
   }
 
   # Pods specs
@@ -16,12 +16,12 @@ resource "kubernetes_deployment" "this" {
     replicas = var.replicas
 
     selector {
-      match_labels = local.k8s_labels
+      match_labels = local.app_labels
     }
 
     template {
       metadata {
-        labels = local.k8s_labels
+        labels = local.app_labels
       }
 
       spec {

@@ -1,3 +1,7 @@
+# 0.4.4 (Mar 24, 2023)
+* Updated google secrets with a valid `secret_id`.
+* Updated labels to use URI-based labels instead of tags.
+
 # 0.4.3 (Mar 24, 2023)
 * Fixed secret values stored in Google Secrets Manager.
 

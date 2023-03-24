@@ -3,12 +3,12 @@ locals {
   secret_refs = { for key in local.secret_keys : key => google_secret_manager_secret.app_secret[key].id }
 }
 
-
 resource "google_secret_manager_secret" "app_secret" {
   for_each = local.secret_keys
 
-  secret_id = "${local.resource_name}/${each.value}"
-  labels    = local.tags
+  // Valid secret_id: [[a-zA-Z_0-9]+]
+  secret_id = "${replace(local.resource_name, "/[^a-zA-Z_0-9]/", "_")}_${each.value}"
+  labels    = local.labels
 
   replication {
     automatic = true
@@ -27,7 +27,7 @@ resource "kubernetes_secret" "app_secret" {
 
   metadata {
     name   = google_secret_manager_secret.app_secret[each.key].id
-    labels = local.tags
+    labels = local.labels
   }
 
   type = "Opaque"

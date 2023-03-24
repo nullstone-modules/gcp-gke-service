@@ -22,10 +22,16 @@ locals {
   block_name    = data.ns_workspace.this.block_name
   resource_name = "${data.ns_workspace.this.block_ref}-${random_string.resource_suffix.result}"
 
-  k8s_labels = {
+  labels = {
     "nullstone.io/stack" = data.ns_workspace.this.stack_name
-    "nullstone.io/app" = data.ns_workspace.this.block_name
-    "nullstone.io/env" = data.ns_workspace.this.env_name
-    "nullstone.io/ref" = data.ns_workspace.this.block_ref
+    "nullstone.io/block"   = data.ns_workspace.this.block_name
+    "nullstone.io/env"   = data.ns_workspace.this.env_name
+    "nullstone.io/ref"   = data.ns_workspace.this.block_ref
+  }
+  app_labels = {
+    "nullstone.io/stack" = data.ns_workspace.this.stack_name
+    "nullstone.io/app"   = data.ns_workspace.this.block_name
+    "nullstone.io/env"   = data.ns_workspace.this.env_name
+    "nullstone.io/ref"   = data.ns_workspace.this.block_ref
   }
 }
