@@ -1,3 +1,6 @@
+# 0.4.5 (Mar 25, 2023)
+* Revert labels to tags to avoid `.` and `/` which are invalid characters in GCP labels.
+
 # 0.4.4 (Mar 24, 2023)
 * Updated google secrets with a valid `secret_id`.
 * Updated labels to use URI-based labels instead of tags.

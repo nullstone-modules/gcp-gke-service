@@ -8,7 +8,7 @@ resource "google_secret_manager_secret" "app_secret" {
 
   // Valid secret_id: [[a-zA-Z_0-9]+]
   secret_id = "${replace(local.resource_name, "/[^a-zA-Z_0-9]/", "_")}_${each.value}"
-  labels    = local.labels
+  labels    = local.tags
 
   replication {
     automatic = true
