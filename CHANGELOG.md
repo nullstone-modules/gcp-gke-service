@@ -1,4 +1,7 @@
-# 0.4.5 (Mar 25, 2023)
+# 0.4.6 (Mar 24, 2023)
+* Ensuring GCP labels don't have uppercase characters.
+
+# 0.4.5 (Mar 24, 2023)
 * Revert labels to tags to avoid `.` and `/` which are invalid characters in GCP labels.
 
 # 0.4.4 (Mar 24, 2023)
