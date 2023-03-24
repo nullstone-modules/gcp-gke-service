@@ -1,3 +1,6 @@
+# 0.4.8 (Mar 24, 2023)
+* Kubernetes secret name must be lowercase.
+
 # 0.4.7 (Mar 24, 2023)
 * Changed kubernetes secret name to valid name.
  
