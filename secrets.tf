@@ -26,7 +26,7 @@ resource "kubernetes_secret" "app_secret" {
   for_each = local.secret_keys
 
   metadata {
-    name   = google_secret_manager_secret.app_secret[each.key].id
+    name   = google_secret_manager_secret.app_secret[each.key].secret_id
     labels = local.labels
   }
 

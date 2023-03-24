@@ -1,3 +1,6 @@
+# 0.4.7 (Mar 24, 2023)
+* Changed kubernetes secret name to valid name.
+ 
 # 0.4.6 (Mar 24, 2023)
 * Ensuring GCP labels don't have uppercase characters.
 
