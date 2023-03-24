@@ -1,3 +1,6 @@
+# 0.4.3 (Mar 24, 2023)
+* Fixed secret values stored in Google Secrets Manager.
+
 # 0.4.2 (Mar 22, 2023)
 * Use `"latest"` tag if there is no app version.
 

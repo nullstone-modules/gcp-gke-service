@@ -19,7 +19,7 @@ resource "google_secret_manager_secret_version" "app_secret" {
   for_each = local.secret_keys
 
   secret      = google_secret_manager_secret.app_secret[each.value].id
-  secret_data = local.cap_secrets[each.value]
+  secret_data = local.all_secrets[each.value]
 }
 
 resource "kubernetes_secret" "app_secret" {
@@ -32,6 +32,6 @@ resource "kubernetes_secret" "app_secret" {
 
   type = "Opaque"
   data = {
-    value = local.cap_secrets[each.value]
+    value = local.all_secrets[each.value]
   }
 }
