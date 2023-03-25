@@ -7,7 +7,7 @@ resource "google_secret_manager_secret" "app_secret" {
   for_each = local.secret_keys
 
   // Valid secret_id: [[a-zA-Z_0-9]+]
-  secret_id = "${replace(local.resource_name, "/[^a-zA-Z_0-9]/", "_")}_${each.value}"
+  secret_id = lower(replace("${local.resource_name}_${each.value}", "/[^a-zA-Z_0-9]/", "_"))
   labels    = local.tags
 
   replication {
@@ -27,11 +27,11 @@ resource "kubernetes_secret" "app_secret" {
 
   metadata {
     // Valid metadata name: [a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*
-    name   = lower(google_secret_manager_secret.app_secret[each.key].secret_id)
+    name   = lower(replace("${local.resource_name}_${each.value}", "/[^a-zA-Z0-9]/", "-"))
     labels = local.labels
   }
 
-  type = "Opaque"
+  type = "ExternalSecret"
   data = {
     value = local.all_secrets[each.value]
   }

@@ -1,3 +1,7 @@
+# 0.4.9 (Mar 25, 2023)
+* Replace `_` in Kubernetes secret name with `-` to make it valid.
+* Add kubernetes recommended labels. (https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/)
+
 # 0.4.8 (Mar 24, 2023)
 * Kubernetes secret name must be lowercase.
 
