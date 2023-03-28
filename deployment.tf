@@ -25,7 +25,8 @@ resource "kubernetes_deployment" "this" {
       }
 
       spec {
-        restart_policy = "Always"
+        restart_policy       = "Always"
+        service_account_name = kubernetes_service_account.app.metadata[0].name
 
         container {
           name  = local.main_container_name
