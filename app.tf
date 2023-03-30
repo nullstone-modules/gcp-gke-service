@@ -5,7 +5,7 @@ data "ns_app_env" "this" {
 }
 
 locals {
-  app_namespace = "default"
+  app_namespace = local.kubernetes_namespace
   app_name      = data.ns_workspace.this.block_name
   app_version   = coalesce(data.ns_app_env.this.version, "latest")
 }
