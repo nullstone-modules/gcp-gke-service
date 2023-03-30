@@ -19,8 +19,19 @@ resource "kubernetes_service_account" "app" {
 }
 
 // This allows the kubernetes service account <app-namespace>/<app-name> to impersonate a workload identity
-resource "google_project_iam_member" "app_workload_identity" {
-  role    = "roles/iam.workloadIdentityUser"
-  member  = "serviceAccount:${local.project_id}.svc.id.goog[${local.app_namespace}/${local.app_name}]"
-  project = local.project_id
+resource "google_service_account_iam_member" "app_workload_identity" {
+  service_account_id = google_service_account.app.name
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "serviceAccount:${local.project_id}.svc.id.goog[${local.app_namespace}/${local.app_name}]"
+  project            = local.project_id
+}
+
+// See https://cloud.google.com/kubernetes-engine/docs/tutorials/workload-identity-secrets
+resource "google_secret_manager_secret_iam_member" "k8s_access" {
+  for_each = local.secret_keys
+
+  secret_id = google_secret_manager_secret.app_secret[each.key].secret_id
+  project   = local.project_id
+  role      = "roles/secretmanager.secretAccessor"
+  member    = "serviceAccount:${google_service_account.app.email}"
 }
