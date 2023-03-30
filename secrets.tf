@@ -42,7 +42,7 @@ resource "kubernetes_manifest" "gsm_secret_store" {
 
           auth = {
             workloadIdentity = {
-              clusterLocation = "" // TODO: Add cluster location
+              clusterLocation = local.region
               clusterName     = local.cluster_name
               serviceAccountRef = {
                 name = google_service_account.app.name

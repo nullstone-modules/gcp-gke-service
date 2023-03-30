@@ -1,5 +1,7 @@
-data "google_compute_zones" "available" {}
+data "google_client_config" "this" {}
 
 locals {
-  project_id = data.google_compute_zones.available.project
+  region     = data.google_client_config.this.region
+  zone       = data.google_client_config.this.zone
+  project_id = data.google_client_config.this.project
 }
