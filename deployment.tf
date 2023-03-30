@@ -57,15 +57,15 @@ resource "kubernetes_deployment" "this" {
           }
 
           dynamic "env" {
-            for_each = local.secret_refs
+            for_each = local.secret_keys
 
             content {
-              name = env.key
+              name = env.value
 
               value_from {
                 secret_key_ref {
-                  name = env.value
-                  key  = "value"
+                  name = "${local.resource_name}-gsm-secrets"
+                  key  = env.value
                 }
               }
             }

@@ -1,3 +1,9 @@
+# 0.5.0 (Unreleased)
+* Moving secrets to Google Secrets Manager. 
+* Configuring external-secrets.io secret store to sync k8s secrets with Google Secrets Manager.
+* Configuring application pod with a kubernetes service account.
+* Kubernetes service account has impersonation access to GCP.
+
 # 0.4.9 (Mar 25, 2023)
 * Replace `_` in Kubernetes secret name with `-` to make it valid.
 * Add kubernetes recommended labels. (https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/)
