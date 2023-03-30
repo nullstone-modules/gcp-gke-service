@@ -1,7 +1,8 @@
-# 0.5.0 (Unreleased)
-* Moving secrets to Google Secrets Manager. 
-* Configuring external-secrets.io secret store to sync k8s secrets with Google Secrets Manager.
-* Configuring application pod with a kubernetes service account.
+# 0.5.0 (Mar 30, 2023)
+* Moved connection from `cluster` to `cluster-namespace`.
+* Moved secrets to Google Secrets Manager. 
+* Configured external-secrets.io secret store to sync k8s secrets with Google Secrets Manager.
+* Configured application pod with a kubernetes service account.
 * Kubernetes service account has impersonation access to GCP.
 
 # 0.4.9 (Mar 25, 2023)
