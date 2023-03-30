@@ -1,6 +1,6 @@
 locals {
-  // secret_refs is prepared in the form [{ name = "", valueFrom = "<arn>" }, ...] for injection into ECS services
-  secret_refs = { for key in local.secret_keys : key => google_secret_manager_secret.app_secret[key].id }
+  // Valid metadata name: [a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*
+  app_secret_store_name = "${local.resource_name}-gsm-secrets"
 }
 
 resource "google_secret_manager_secret" "app_secret" {
@@ -22,17 +22,69 @@ resource "google_secret_manager_secret_version" "app_secret" {
   secret_data = local.all_secrets[each.value]
 }
 
-resource "kubernetes_secret" "app_secret" {
-  for_each = local.secret_keys
+// The secret store defines "how" to access google secrets manager
+// This secret store is only reponsible for establishing authentication config
+resource "kubernetes_manifest" "gsm_secret_store" {
+  manifest = {
+    apiVersion = "external-secrets.io/v1beta1"
+    kind       = "SecretStore"
 
-  metadata {
-    // Valid metadata name: [a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*
-    name   = lower(replace("${local.resource_name}_${each.value}", "/[^a-zA-Z0-9]/", "-"))
-    labels = local.labels
+    metadata = {
+      namespace = local.app_namespace
+      name      = local.app_secret_store_name
+      labels    = local.labels
+    }
+
+    spec = {
+      provider = {
+        gcpsm = {
+          projectID = local.project_id
+
+          auth = {
+            workloadIdentity = {
+              clusterLocation = local.region
+              clusterName     = local.cluster_name
+              serviceAccountRef = {
+                name = kubernetes_service_account.app.metadata.0.name
+              }
+            }
+          }
+        }
+      }
+    }
   }
+}
 
-  type = "ExternalSecret"
-  data = {
-    value = local.all_secrets[each.value]
+// The `ExternalSecret` resource creates a single k8s Secret
+// with all secrets from capabilities and `secrets` var for this application pod
+// Each `key` in this secret maps directly to an env var to inject into the app pod
+resource "kubernetes_manifest" "secrets_from_gsm" {
+  depends_on = [kubernetes_manifest.gsm_secret_store]
+
+  manifest = {
+    apiVersion = "external-secrets.io/v1beta1"
+    kind       = "ExternalSecret"
+
+    metadata = {
+      namespace = local.app_namespace
+      name      = "${local.resource_name}-gsm-secrets"
+      labels    = local.labels
+    }
+
+    spec = {
+      secretStoreRef = {
+        kind = "SecretStore"
+        name = local.app_secret_store_name
+      }
+      target = {
+        name = "${local.resource_name}-gsm-secrets"
+      }
+      data = [for key in local.secret_keys : {
+        secretKey = key
+        remoteRef = {
+          key = google_secret_manager_secret.app_secret[key].secret_id
+        }
+      }]
+    }
   }
 }

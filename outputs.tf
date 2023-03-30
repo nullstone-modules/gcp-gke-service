@@ -29,6 +29,17 @@ output "image_pusher" {
   sensitive = true
 }
 
+output "deployer" {
+  value = {
+    email       = try(google_service_account.deployer.email, "")
+    private_key = try(google_service_account_key.deployer.private_key, "")
+  }
+
+  description = "object({ email: string, private_key: string }) ||| A GCP service account with explicit privilege to deploy this GKE service to its cluster."
+  sensitive   = true
+}
+
+
 output "main_container_name" {
   value       = local.main_container_name
   description = "string ||| The name of the container definition for the main service container"
