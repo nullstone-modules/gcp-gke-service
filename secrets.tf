@@ -82,7 +82,7 @@ resource "kubernetes_manifest" "secrets_from_gsm" {
       data = [for key in local.secret_keys : {
         secretKey = key
         remoteRef = {
-          key = google_secret_manager_secret.app_secret[key].name
+          key = google_secret_manager_secret.app_secret[key].secret_id
         }
       }]
     }
