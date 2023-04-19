@@ -1,3 +1,7 @@
+# 0.5.1 (Apr 19, 2023)
+* Added `ClusterIP` `Service` that exposes `var.port` to the cluster.
+* Added `service_port` and `service_name` to `app_metadata` so that capabilities know which port is exposed to the cluster.
+
 # 0.5.0 (Mar 30, 2023)
 * Moved connection from `cluster` to `cluster-namespace`.
 * Moved secrets to Google Secrets Manager. 
