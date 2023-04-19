@@ -15,6 +15,7 @@ locals {
     // Inject app metadata into capabilities here (e.g. service_account_id)
     service_account_id    = google_service_account.app.id
     service_account_email = google_service_account.app.email
+    service_name          = kubernetes_service.this.metadata[0].name
     service_port          = var.port
   })
 }
