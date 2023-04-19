@@ -45,7 +45,7 @@ resource "kubernetes_manifest" "gsm_secret_store" {
               clusterLocation = local.region
               clusterName     = local.cluster_name
               serviceAccountRef = {
-                name = kubernetes_service_account.app.metadata.0.name
+                name = kubernetes_service_account_v1.app.metadata.0.name
               }
             }
           }
