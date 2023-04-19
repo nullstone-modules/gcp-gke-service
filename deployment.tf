@@ -2,7 +2,7 @@ locals {
   main_container_name = "main"
 }
 
-resource "kubernetes_deployment" "this" {
+resource "kubernetes_deployment_v1" "this" {
   wait_for_rollout = false
 
   metadata {
@@ -36,6 +36,20 @@ resource "kubernetes_deployment" "this" {
             limits = {
               cpu    = var.cpu
               memory = var.memory
+            }
+          }
+
+          readiness_probe {
+            failure_threshold     = 3
+            success_threshold     = 1
+            initial_delay_seconds = 0
+            period_seconds        = 10
+            timeout_seconds       = 1
+
+            http_get {
+              scheme = "http"
+              path   = "/"
+              port   = var.port
             }
           }
 

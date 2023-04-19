@@ -1,3 +1,6 @@
+# 0.5.4 (Apr 19, 2023)
+* Added `readinessProbe` to `Service` with default values.
+
 # 0.5.3 (Apr 19, 2023)
 * Fixed `Service` to create Network Endoint Group (NEG).
 

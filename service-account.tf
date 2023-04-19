@@ -3,7 +3,7 @@ resource "google_service_account" "app" {
   display_name = "Service Account for Nullstone App ${local.app_name}"
 }
 
-resource "kubernetes_service_account" "app" {
+resource "kubernetes_service_account_v1" "app" {
   metadata {
     namespace = local.app_namespace
     name      = local.app_name
