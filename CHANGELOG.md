@@ -1,3 +1,6 @@
+# 0.5.6 (Apr 19, 2023)
+* Fixed references to kubernetes resources.
+
 # 0.5.5 (Apr 19, 2023)
 * Fixed references to kubernetes resources.
 
