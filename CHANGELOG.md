@@ -1,3 +1,6 @@
+# 0.5.7 (Apr 19, 2023)
+* Fixed scheme on readiness probe.
+
 # 0.5.6 (Apr 19, 2023)
 * Fixed references to kubernetes resources.
 

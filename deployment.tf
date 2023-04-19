@@ -47,7 +47,7 @@ resource "kubernetes_deployment_v1" "this" {
             timeout_seconds       = 1
 
             http_get {
-              scheme = "http"
+              scheme = "HTTP"
               path   = "/"
               port   = var.port
             }
