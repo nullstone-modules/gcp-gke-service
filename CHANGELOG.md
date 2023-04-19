@@ -1,3 +1,6 @@
+# 0.5.3 (Apr 19, 2023)
+* Fixed `Service` to create Network Endoint Group (NEG).
+
 # 0.5.2 (Apr 19, 2023)
 * Fixed `Service` selector.
 

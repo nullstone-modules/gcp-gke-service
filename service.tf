@@ -3,6 +3,10 @@ resource "kubernetes_service" "this" {
     name      = local.app_name
     namespace = local.app_namespace
     labels    = local.app_labels
+
+    annotations = {
+      "cloud.google.com/neg" = jsonencode({ ingress : true })
+    }
   }
 
   spec {
