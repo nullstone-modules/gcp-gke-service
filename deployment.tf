@@ -16,7 +16,7 @@ resource "kubernetes_deployment" "this" {
     replicas = var.replicas
 
     selector {
-      match_labels = local.app_labels
+      match_labels = local.match_labels
     }
 
     template {
