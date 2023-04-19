@@ -8,9 +8,7 @@ resource "kubernetes_service" "this" {
   spec {
     type = "ClusterIP"
 
-    selector = {
-      match_labels = local.match_labels
-    }
+    selector = local.match_labels
 
     port {
       port        = var.port
