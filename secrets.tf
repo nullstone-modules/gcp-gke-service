@@ -23,7 +23,7 @@ resource "google_secret_manager_secret_version" "app_secret" {
 }
 
 // The secret store defines "how" to access google secrets manager
-// This secret store is only reponsible for establishing authentication config
+// This secret store is only responsible for establishing authentication config
 resource "kubernetes_manifest" "gsm_secret_store" {
   manifest = {
     apiVersion = "external-secrets.io/v1beta1"
