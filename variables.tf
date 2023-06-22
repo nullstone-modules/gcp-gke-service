@@ -19,6 +19,16 @@ This means the default is 512 Mi or 0.5 Gi.
 EOF
 }
 
+variable "command" {
+  type        = list(string)
+  default     = []
+  description = <<EOF
+This overrides the `CMD` specified in the image.
+Specify a blank list to use the image's `CMD`.
+Each token in the command is an item in the list.
+For example, `echo "Hello World"` would be represented as ["echo", "\"Hello World\""].
+EOF
+}
 
 variable "replicas" {
   type        = number

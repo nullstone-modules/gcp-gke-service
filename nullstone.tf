@@ -46,6 +46,6 @@ locals {
     "app.kubernetes.io/part-of"    = data.ns_workspace.this.stack_name
     "app.kubernetes.io/managed-by" = "nullstone"
     // nullstone labels
-    "nullstone.io/app"   = data.ns_workspace.this.block_name
+    "nullstone.io/app" = data.ns_workspace.this.block_name
   }, local.match_labels)
 }

@@ -1,5 +1,6 @@
 locals {
   main_container_name = "main"
+  command             = length(var.command) > 0 ? var.command : null
 }
 
 resource "kubernetes_deployment_v1" "this" {
@@ -31,6 +32,7 @@ resource "kubernetes_deployment_v1" "this" {
         container {
           name  = local.main_container_name
           image = "${local.service_image}:${local.app_version}"
+          args  = local.command
 
           resources {
             limits = {
