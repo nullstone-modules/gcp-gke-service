@@ -1,3 +1,6 @@
+# 0.5.8 (Jun 23, 2023)
+* Added optional var.command for overriding image CMD.
+
 # 0.5.7 (Apr 19, 2023)
 * Fixed scheme on readiness probe.
 
