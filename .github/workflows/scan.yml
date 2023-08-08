@@ -9,7 +9,7 @@ env:
   NULLSTONE_API_KEY: ${{ secrets.NULLSTONE_API_KEY }}
 
 jobs:
-  publish:
+  scan:
     runs-on: ubuntu-latest
 
     defaults:

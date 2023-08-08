@@ -34,6 +34,12 @@ resource "kubernetes_deployment_v1" "this" {
           image = "${local.service_image}:${local.app_version}"
           args  = local.command
 
+          security_context {
+            capabilities {
+              drop = ["NET_RAW"]
+            }
+          }
+
           resources {
             limits = {
               cpu    = var.cpu

@@ -4,6 +4,8 @@ on:
     tags:
       - 'v*'
 
+permissions: read-all
+
 env:
   NULLSTONE_ORG: nullstone
   NULLSTONE_API_KEY: ${{ secrets.NULLSTONE_API_KEY }}
