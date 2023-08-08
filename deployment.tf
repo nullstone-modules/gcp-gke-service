@@ -4,6 +4,8 @@ locals {
 }
 
 resource "kubernetes_deployment_v1" "this" {
+  #bridgecrew:skip=CKV_K8S_35: "Prefer using secrets as files over secrets as environment variables". Secrets are provided as env vars for easier integration.
+  #bridgecrew:skip=CKV_K8S_43: "Image should use digest". Image digest is not available yet.
   wait_for_rollout = false
 
   metadata {
@@ -34,10 +36,37 @@ resource "kubernetes_deployment_v1" "this" {
           image = "${local.service_image}:${local.app_version}"
           args  = local.command
 
+          security_context {
+            read_only_root_filesystem = true
+
+            capabilities {
+              drop = ["ALL"]
+            }
+          }
+
           resources {
+            requests = {
+              cpu    = var.cpu
+              memory = var.memory
+            }
+
             limits = {
               cpu    = var.cpu
               memory = var.memory
+            }
+          }
+
+          liveness_probe {
+            failure_threshold     = 3
+            success_threshold     = 1
+            initial_delay_seconds = 0
+            period_seconds        = 10
+            timeout_seconds       = 1
+
+            http_get {
+              scheme = "HTTP"
+              path   = "/"
+              port   = var.port
             }
           }
 
