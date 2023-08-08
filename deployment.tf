@@ -37,8 +37,10 @@ resource "kubernetes_deployment_v1" "this" {
           args  = local.command
 
           security_context {
+            read_only_root_filesystem = true
+
             capabilities {
-              drop = ["NET_RAW"]
+              drop = ["ALL"]
             }
           }
 

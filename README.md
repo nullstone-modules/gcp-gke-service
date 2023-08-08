@@ -44,3 +44,8 @@ To access through the Nullstone CLI, use `nullstone logs` CLI command. (See [`lo
 
 Nullstone automatically injects secrets into your GKE Service through environment variables.
 (They are stored in GCP Secrets Manager and injected by Kubernetes during launch.)
+
+## File system
+
+The root file system is configured to be read-only to prevent an attacker from making permanent local changes and prevents binaries from being written to the local filesystem.
+To create a persistent file system, add a `Datastore` to attach volumes or object storage.
