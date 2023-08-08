@@ -1,0 +1,27 @@
+name: Nullstone
+on:
+  push:
+    branches:
+      - compliance
+
+env:
+  NULLSTONE_ORG: nullstone
+  NULLSTONE_API_KEY: ${{ secrets.NULLSTONE_API_KEY }}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run Bridgecrew
+        id: Bridgecrew
+        uses: bridgecrewio/bridgecrew-action@master
+        with:
+          api-key: ${{ secrets.BC_API_KEY }}
