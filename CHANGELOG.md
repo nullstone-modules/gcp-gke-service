@@ -1,6 +1,10 @@
 # 0.6.0 (Aug 08, 2023)
 * Added compliance scanning.
 * Update `README.md` with application management info.
+* Configured root file system as read-only.
+* Configured requested resources.
+* Dropped additional capabilities from the container.
+* Configure liveness probe.
 
 # 0.5.9 (Jun 23, 2023)
 * Added optional `var.command` for overriding image CMD.
