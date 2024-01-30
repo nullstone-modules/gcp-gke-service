@@ -73,14 +73,12 @@ resource "kubernetes_deployment_v1" "this" {
           readiness_probe {
             failure_threshold     = 3
             success_threshold     = 1
-            initial_delay_seconds = 0
+            initial_delay_seconds = var.readiness_delay
             period_seconds        = 10
             timeout_seconds       = 1
 
-            http_get {
-              scheme = "HTTP"
-              path   = "/"
-              port   = var.port
+            tcp_socket {
+              port = var.port
             }
           }
 

@@ -1,3 +1,6 @@
+# 0.6.1 (Jan 30, 2024)
+* Added readiness_delay, switch to tcp readiness check
+
 # 0.6.0 (Aug 08, 2023)
 * Added compliance scanning.
 * Update `README.md` with application management info.

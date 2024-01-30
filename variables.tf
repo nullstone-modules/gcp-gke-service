@@ -46,3 +46,14 @@ the service will fail due to bind due to permission errors.
 Specify 0 to disable network connectivity to this container.
 EOF
 }
+
+variable "readiness_delay" {
+  type        = number
+  default     = 0
+  description = <<EOF
+The period of time (in seconds) to delay before performing a readiness check against the application.
+If an application has a long start time, readiness_delay can be used to defer readiness checks on the application.
+The default value is 0.
+EOF
+}
+
