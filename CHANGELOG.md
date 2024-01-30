@@ -1,5 +1,8 @@
+# 0.6.2 (Jan 30, 2024)
+* Use `var.readiness_delay` for liveness probe, switch to tcp liveness probe.
+
 # 0.6.1 (Jan 30, 2024)
-* Added readiness_delay, switch to tcp readiness check
+* Added `var.readiness_delay`, switch to tcp readiness probe.
 
 # 0.6.0 (Aug 08, 2023)
 * Added compliance scanning.
