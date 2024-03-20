@@ -1,3 +1,6 @@
+# 0.6.3 (Mar 20, 2024)
+* Disable `read_only_root_filesystem`.
+
 # 0.6.2 (Jan 30, 2024)
 * Use `var.readiness_delay` for liveness probe, switch to tcp liveness probe.
 
