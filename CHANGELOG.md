@@ -1,3 +1,6 @@
+# 0.6.4 (Mar 20, 2024)
+* Configured `ClusterIP` service to forward port 80 to `var.port` so that `http://<service>` resolves.
+
 # 0.6.3 (Mar 20, 2024)
 * Disable `read_only_root_filesystem`.
 * Updated creation sequence to ensure secrets are created before creating the deployment.

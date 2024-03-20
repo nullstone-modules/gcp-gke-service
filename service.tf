@@ -15,7 +15,7 @@ resource "kubernetes_service_v1" "this" {
     selector = local.match_labels
 
     port {
-      port        = var.port
+      port        = 80
       target_port = var.port
     }
   }
