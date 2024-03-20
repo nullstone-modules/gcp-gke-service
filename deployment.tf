@@ -8,6 +8,8 @@ resource "kubernetes_deployment_v1" "this" {
   #bridgecrew:skip=CKV_K8S_43: "Image should use digest". Image digest is not available yet.
   wait_for_rollout = false
 
+  depends_on = [kubernetes_manifest.secrets_from_gsm]
+
   metadata {
     name      = local.app_name
     namespace = local.app_namespace
