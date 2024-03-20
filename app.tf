@@ -16,6 +16,6 @@ locals {
     service_account_id    = google_service_account.app.id
     service_account_email = google_service_account.app.email
     service_name          = kubernetes_service_v1.this.metadata[0].name
-    service_port          = var.port
+    service_port          = local.service_port
   })
 }

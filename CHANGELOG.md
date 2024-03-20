@@ -1,3 +1,6 @@
+# 0.6.5 (Mar 20, 2024)
+* Aligning `service_port` for capabilities to port 80.
+
 # 0.6.4 (Mar 20, 2024)
 * Configured `ClusterIP` service to forward port 80 to `var.port` so that `http://<service>` resolves.
 

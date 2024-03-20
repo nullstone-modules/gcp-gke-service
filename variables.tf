@@ -47,6 +47,10 @@ Specify 0 to disable network connectivity to this container.
 EOF
 }
 
+locals {
+  service_port = 80
+}
+
 variable "readiness_delay" {
   type        = number
   default     = 0
