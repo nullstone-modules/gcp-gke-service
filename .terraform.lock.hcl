@@ -4,7 +4,11 @@
 provider "registry.terraform.io/hashicorp/google" {
   version = "5.21.0"
   hashes = [
+    "h1:6usUS5cjmiWM5GZfLlvPITj2fkKoCg/8apAD2K649vg=",
+    "h1:FJdo3imU4ORsU44zEoxRF7WvjTzK2pVS3qd+rvIDdYU=",
+    "h1:XFwEEqXVi0PaGzYI2p65DxfWggnQItX5AsRCveTOmT4=",
     "h1:sx90k0tCTsBaEkU3+l1+/1j5q4Y98QqxrfpAa0mvkuU=",
+    "h1:wppp54MHIe4Vl2OBnTfBjaxcKQnJeVpZaZdyA8AiTpE=",
     "zh:4185b880504af117898f6b0c50fd8459ac4b9d5fd7c2ceaf6fc5b18d4d920978",
     "zh:56bbb4ae9cfbd1a9c3008e911605f1edccfa6a1048d88dba0c92f347441d274d",
     "zh:59246baa783208f5b51ad9d4a4008a327128e234f4a8d1d629cf0af6ae6a9249",
@@ -24,6 +28,10 @@ provider "registry.terraform.io/hashicorp/kubernetes" {
   version = "2.27.0"
   hashes = [
     "h1:/3kLyOR2jTaWS1MKso4xAztrocGBMxi8yVadWiqSWOg=",
+    "h1:GzU0FzYAT/+IgAhnSBcFH3bT+4I5N6oSga6iZgNJAus=",
+    "h1:TrlG/sofnDv8kAbzKOD5pIPeUiI5VQY61NuWH+cItDw=",
+    "h1:WuU4rl7szPJr9Nfu5OoQGF84k8yQf+gmS9zU2eZuxcc=",
+    "h1:w9ENsSqT/3Oj/yt4GcudG202ehSD2Ls5gwqOLoKrBUQ=",
     "zh:3bdba30ae67c55dc7e9a317ac0da3b208ea7926fe9c2f0ae6587ee88dcc58d1f",
     "zh:3f35138a831c00b188d2ffee27111dd0cf59afad2dd5653ed9e67d59646de12c",
     "zh:64066d18f6ae9a316c2bc840ef3e641d7ab94e1ea3a41d12523e77345ad442ef",
@@ -42,7 +50,11 @@ provider "registry.terraform.io/hashicorp/kubernetes" {
 provider "registry.terraform.io/hashicorp/random" {
   version = "3.6.0"
   hashes = [
+    "h1:5KeoKSVKVHJW308uiTgslxFbjQAdWzBGUFK68vgMRWY=",
+    "h1:I8MBeauYA8J8yheLJ8oSMWqB0kovn16dF/wKZ1QTdkk=",
+    "h1:R5Ucn26riKIEijcsiOMBR3uOAjuOMfI1x7XvH4P6B1w=",
     "h1:p6WG1IPHnqx1fnJVKNjv733FBaArIugqy58HRZnpPCk=",
+    "h1:t0mRdJzegohRKhfdoQEJnv3JRISSezJRblN0HIe67vo=",
     "zh:03360ed3ecd31e8c5dac9c95fe0858be50f3e9a0d0c654b5e504109c2159287d",
     "zh:1c67ac51254ba2a2bb53a25e8ae7e4d076103483f55f39b426ec55e47d1fe211",
     "zh:24a17bba7f6d679538ff51b3a2f378cedadede97af8a1db7dad4fd8d6d50f829",
@@ -61,7 +73,11 @@ provider "registry.terraform.io/hashicorp/random" {
 provider "registry.terraform.io/nullstone-io/ns" {
   version = "0.6.22"
   hashes = [
+    "h1:1pJP5/RweaOf8v5uWVLyIIO9+yKMcY0GdRZiADGZMWc=",
+    "h1:T80dWkdEuI69zRY2UXm255iW+2UiedaNsuARrLp/3OY=",
     "h1:TOVxLHvpui8TZ3/ehqJe6hcKeETSTTbIGtGTloO2/Pc=",
+    "h1:XOyqJRPTzXpSgkZGQvbmyzTKbvPNsI8smkQsc2sZKMA=",
+    "h1:aMFqeu5KNBrJVN9w7fQFZHG+dF95BMxEKmBWKfRMjfQ=",
     "zh:003ead5999768765dc0b9a0becaaddd6c8f1088b115f29604f6aaa2dc6e12f29",
     "zh:10cf75e381320ed161a70d70fa87d59bd42810666cba62c81cb3e13c9bab8998",
     "zh:28a9efb91fe63dad2c125fd4ff024acfad2c7f33d8f966e138693ad54da84fc7",

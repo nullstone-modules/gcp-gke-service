@@ -1,3 +1,6 @@
+# 0.6.7 (Mar 22, 2024)
+* Fix lockfile.
+
 # 0.6.6 (Mar 22, 2024)
 * Added support for `volumes` and `volume_mounts` from capabilities.
 * Upgraded `google` TF provider.
