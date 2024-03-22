@@ -1,3 +1,7 @@
+# 0.6.6 (Mar 22, 2024)
+* Added support for `volumes` and `volume_mounts` from capabilities.
+* Upgraded `google` TF provider.
+
 # 0.6.5 (Mar 20, 2024)
 * Aligning `service_port` for capabilities to port 80.
 

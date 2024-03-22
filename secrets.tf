@@ -11,7 +11,7 @@ resource "google_secret_manager_secret" "app_secret" {
   labels    = local.tags
 
   replication {
-    automatic = true
+    auto {}
   }
 }
 

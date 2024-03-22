@@ -33,6 +33,29 @@ resource "kubernetes_deployment_v1" "this" {
         restart_policy       = "Always"
         service_account_name = kubernetes_service_account_v1.app.metadata[0].name
 
+        dynamic "volume" {
+          for_each = local.volumes
+
+          content {
+            name = volume.key
+
+            dynamic "empty_dir" {
+              for_each = volume.value.empty_dir == null ? [] : [1]
+              content {}
+            }
+
+            dynamic "persistent_volume_claim" {
+              for_each = volume.value.persistent_volume_claim == null ? [] : [1]
+              iterator = pvc
+
+              content {
+                claim_name = volume.value.persistent_volume_claim.claim_name
+                read_only  = lookup(volume.value.persistent_volume_claim, "read_only", null)
+              }
+            }
+          }
+        }
+
         container {
           name  = local.main_container_name
           image = "${local.service_image}:${local.app_version}"
@@ -110,6 +133,18 @@ resource "kubernetes_deployment_v1" "this" {
                   key  = env.value
                 }
               }
+            }
+          }
+
+          dynamic "volume_mount" {
+            for_each = local.volume_mounts
+
+            content {
+              name              = volume_mount.key
+              mount_path        = volume_mount.value.mount_path
+              sub_path          = volume_mount.value.sub_path
+              mount_propagation = volume_mount.value.mount_propagation
+              read_only         = volume_mount.value.read_only
             }
           }
         }
