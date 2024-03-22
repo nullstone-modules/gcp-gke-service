@@ -79,28 +79,35 @@ resource "kubernetes_deployment_v1" "this" {
             }
           }
 
-          liveness_probe {
-            failure_threshold     = 3
-            success_threshold     = 1
-            initial_delay_seconds = var.readiness_delay
-            period_seconds        = 10
-            timeout_seconds       = 1
+          dynamic "liveness_probe" {
+            for_each = local.has_service ? [1] : []
 
+            content {
+              failure_threshold     = 3
+              success_threshold     = 1
+              initial_delay_seconds = var.readiness_delay
+              period_seconds        = 10
+              timeout_seconds       = 1
 
-            tcp_socket {
-              port = var.port
+              tcp_socket {
+                port = var.port
+              }
             }
           }
 
-          readiness_probe {
-            failure_threshold     = 3
-            success_threshold     = 1
-            initial_delay_seconds = var.readiness_delay
-            period_seconds        = 10
-            timeout_seconds       = 1
+          dynamic "readiness_probe" {
+            for_each = local.has_service ? [1] : []
 
-            tcp_socket {
-              port = var.port
+            content {
+              failure_threshold     = 3
+              success_threshold     = 1
+              initial_delay_seconds = var.readiness_delay
+              period_seconds        = 10
+              timeout_seconds       = 1
+
+              tcp_socket {
+                port = var.port
+              }
             }
           }
 

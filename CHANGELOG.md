@@ -1,3 +1,6 @@
+# 0.6.8 (Mar 22, 2024)
+* Fixed liveness/readiness probe (Disabled when `port=0`).
+
 # 0.6.7 (Mar 22, 2024)
 * Fix lockfile.
 
