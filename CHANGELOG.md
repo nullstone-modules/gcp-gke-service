@@ -1,3 +1,6 @@
+# 0.6.11 (Mar 27, 2024)
+* Fixed `claim_name` to be required.
+
 # 0.6.10 (Mar 27, 2024)
 * Fixed invalid Terraform usage of `claim_name`.
 

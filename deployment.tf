@@ -49,7 +49,7 @@ resource "kubernetes_deployment_v1" "this" {
               iterator = pvc
 
               content {
-                claim_name = lookup(pvc, "claim_name", "")
+                claim_name = pvc.claim_name
                 read_only  = lookup(pvc, "read_only", null)
               }
             }
