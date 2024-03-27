@@ -1,6 +1,6 @@
 locals {
-  has_service  = var.port == 0 ? false : true
-  service_name = var.port == 0 ? "" : local.app_name
+  has_service  = var.service_port == 0 || var.container_port == 0 ? false : true
+  service_name = local.has_service ? "" : local.app_name
 }
 
 resource "kubernetes_service_v1" "this" {
@@ -22,8 +22,8 @@ resource "kubernetes_service_v1" "this" {
     selector = local.match_labels
 
     port {
-      port        = local.service_port
-      target_port = var.port
+      port        = var.service_port
+      target_port = var.container_port
     }
   }
 }

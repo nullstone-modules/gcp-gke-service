@@ -100,7 +100,7 @@ resource "kubernetes_deployment_v1" "this" {
               timeout_seconds       = 1
 
               tcp_socket {
-                port = var.port
+                port = var.container_port
               }
             }
           }
@@ -116,13 +116,13 @@ resource "kubernetes_deployment_v1" "this" {
               timeout_seconds       = 1
 
               tcp_socket {
-                port = var.port
+                port = var.container_port
               }
             }
           }
 
           dynamic "port" {
-            for_each = var.port > 0 ? [var.port] : []
+            for_each = var.container_port > 0 ? [var.container_port] : []
 
             content {
               container_port = port.value

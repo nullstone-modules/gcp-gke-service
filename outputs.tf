@@ -39,7 +39,6 @@ output "deployer" {
   sensitive   = true
 }
 
-
 output "main_container_name" {
   value       = local.main_container_name
   description = "string ||| The name of the container definition for the main service container"

@@ -36,19 +36,24 @@ variable "replicas" {
   default     = 1
 }
 
-variable "port" {
+variable "container_port" {
   type        = number
-  default     = 80
+  default     = 8080
   description = <<EOF
-The port that the service is listening on.
-This is set to port 80 by default; however, if the service in the container is a non-root user,
-the service will fail due to bind due to permission errors.
-Specify 0 to disable network connectivity to this container.
+Set your container to listen on this port.
+By default, this is set to 8080.
+You cannot bind to a port <1024 a you will get permission errors.
 EOF
 }
 
-locals {
-  service_port = 80
+variable "service_port" {
+  type        = number
+  default     = 80
+  description = <<EOF
+Other services on the network can reach this app via `<app_name>:<service_port>`.
+`service_port` is mapped to `container_port`.
+Specify 0 to disable network connectivity to this app.
+EOF
 }
 
 variable "readiness_delay" {

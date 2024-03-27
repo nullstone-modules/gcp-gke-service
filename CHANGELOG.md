@@ -1,3 +1,6 @@
+# 0.6.14 (Mar 27, 2024)
+* Added `var.service_port` to allow customization of port listening on the private network.
+
 # 0.6.13 (Mar 27, 2024)
 * Fixed more syntax mistakes with iterators on deployment volumes.
 
