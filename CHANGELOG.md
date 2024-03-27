@@ -1,6 +1,7 @@
 # 0.6.9 (Mar 27, 2024)
 * Added support for `hostPath` volumes from capabilities.
 * Fixed syntax for `persistentVolumeClaim` in k8s deployment.
+* Added `app_metadata["internal_subdomain"]` for capabilities.
 
 # 0.6.8 (Mar 22, 2024)
 * Fixed liveness/readiness probe (Disabled when `port=0`).
