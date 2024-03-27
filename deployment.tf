@@ -49,8 +49,18 @@ resource "kubernetes_deployment_v1" "this" {
               iterator = pvc
 
               content {
-                claim_name = volume.value.persistent_volume_claim.claim_name
-                read_only  = lookup(volume.value.persistent_volume_claim, "read_only", null)
+                claim_name = pvc.claim_name
+                read_only  = lookup(pvc, "read_only", null)
+              }
+            }
+
+            dynamic "host_path" {
+              for_each = volume.value.host_path == null ? [] : [1]
+              iterator = pvc
+
+              content {
+                type = pvc.type
+                path = pvc.path
               }
             }
           }
