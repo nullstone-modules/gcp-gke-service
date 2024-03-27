@@ -1,3 +1,6 @@
+# 0.6.12 (Mar 27, 2024)
+* Fixed syntax mistake with iterators on deployment volumes.
+
 # 0.6.11 (Mar 27, 2024)
 * Fixed `claim_name` to be required.
 
