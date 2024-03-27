@@ -45,7 +45,7 @@ resource "kubernetes_deployment_v1" "this" {
             }
 
             dynamic "persistent_volume_claim" {
-              for_each = volume.value.persistent_volume_claim == null ? [] : [1]
+              for_each = volume.value.persistent_volume_claim == null ? [] : [volume.value.persistent_volume_claim]
               iterator = pvc
 
               content {
@@ -55,7 +55,7 @@ resource "kubernetes_deployment_v1" "this" {
             }
 
             dynamic "host_path" {
-              for_each = volume.value.host_path == null ? [] : [1]
+              for_each = volume.value.host_path == null ? [] : [volume.value.host_path]
               iterator = hp
 
               content {
