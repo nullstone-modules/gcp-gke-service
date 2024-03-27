@@ -37,7 +37,7 @@ resource "kubernetes_deployment_v1" "this" {
           for_each = local.volumes
 
           content {
-            name = volume.key
+            name = volume.value.name
 
             dynamic "empty_dir" {
               for_each = volume.value.empty_dir == null ? [] : [1]
@@ -49,7 +49,7 @@ resource "kubernetes_deployment_v1" "this" {
               iterator = pvc
 
               content {
-                claim_name = pvc.claim_name
+                claim_name = lookup(pvc, "claim_name", "")
                 read_only  = lookup(pvc, "read_only", null)
               }
             }

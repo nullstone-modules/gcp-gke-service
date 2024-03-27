@@ -1,3 +1,6 @@
+# 0.6.10 (Mar 27, 2024)
+* Fixed invalid Terraform usage of `claim_name`.
+
 # 0.6.9 (Mar 27, 2024)
 * Added support for `hostPath` volumes from capabilities.
 * Fixed syntax for `persistentVolumeClaim` in k8s deployment.

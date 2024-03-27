@@ -13,13 +13,12 @@ locals {
     }
   }
 
-  volumes = {
-    for v in local.cap_volumes : v.name =>
-    {
+  volumes = [
+    for v in local.cap_volumes : {
       name                    = v.name
       persistent_volume_claim = jsondecode(lookup(v, "persistent_volume_claim", "null"))
       empty_dir               = jsondecode(lookup(v, "empty_dir", "null"))
       host_path               = jsondecode(lookup(v, "host_path", "null"))
     }
-  }
+  ]
 }
