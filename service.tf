@@ -1,6 +1,6 @@
 locals {
   has_service  = var.service_port == 0 || var.container_port == 0 ? false : true
-  service_name = local.has_service ? "" : local.app_name
+  service_name = !local.has_service ? "" : local.app_name
 }
 
 resource "kubernetes_service_v1" "this" {

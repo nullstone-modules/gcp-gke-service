@@ -1,3 +1,6 @@
+# 0.6.16 (Mar 27, 2024)
+* Fixed service name from being blank.
+
 # 0.6.15 (Mar 27, 2024)
 * Fixed capability usage of `var.service_port`.
 
