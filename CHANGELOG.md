@@ -1,3 +1,6 @@
+# 0.6.15 (Mar 27, 2024)
+* Fixed capability usage of `var.service_port`.
+
 # 0.6.14 (Mar 27, 2024)
 * Added `var.service_port` to allow customization of port listening on the private network.
 
