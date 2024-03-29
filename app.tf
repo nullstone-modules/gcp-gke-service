@@ -16,6 +16,7 @@ locals {
     service_account_id    = google_service_account.app.id
     service_account_email = google_service_account.app.email
     service_name          = local.service_name
+    container_port        = var.container_port
     service_port          = var.service_port
     internal_subdomain    = var.service_port == 0 ? "" : "${local.block_name}.${local.kubernetes_namespace}.svc.cluster.local"
   })

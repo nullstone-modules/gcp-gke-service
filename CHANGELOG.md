@@ -1,3 +1,6 @@
+# 0.6.17 (Mar 29, 2024)
+* Added capability support for `startupProbe`, `readinessProbe`, and `livenessProbe`.
+
 # 0.6.16 (Mar 27, 2024)
 * Fixed service name from being blank.
 

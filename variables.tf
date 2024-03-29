@@ -40,7 +40,7 @@ variable "container_port" {
   type        = number
   default     = 8080
   description = <<EOF
-Set your container to listen on this port.
+This is the port that your container is listening and will get mapped to var.service_port for external communication.
 By default, this is set to 8080.
 You cannot bind to a port <1024 a you will get permission errors.
 EOF
@@ -55,14 +55,3 @@ Other services on the network can reach this app via `<app_name>:<service_port>`
 Specify 0 to disable network connectivity to this app.
 EOF
 }
-
-variable "readiness_delay" {
-  type        = number
-  default     = 0
-  description = <<EOF
-The period of time (in seconds) to delay before performing a readiness check against the application.
-If an application has a long start time, readiness_delay can be used to defer readiness checks on the application.
-The default value is 0.
-EOF
-}
-
