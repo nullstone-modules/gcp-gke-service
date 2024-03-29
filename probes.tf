@@ -11,10 +11,10 @@ locals {
       success_threshold     = lookup(p, "success_threshold")
       failure_threshold     = lookup(p, "failure_threshold")
 
-      exec       = compact([lookup(p, "exec", "null")])
-      grpc       = compact([lookup(p, "grpc", "null")])
-      http_get   = compact([lookup(p, "http_get", "null")])
-      tcp_socket = compact([lookup(p, "tcp_socket", "null")])
+      exec       = compact([lookup(p, "exec", null)])
+      grpc       = compact([lookup(p, "grpc", null)])
+      http_get   = compact([lookup(p, "http_get", null)])
+      tcp_socket = compact([lookup(p, "tcp_socket", null)])
     }
   ]
   readiness_probes = [
@@ -25,10 +25,10 @@ locals {
       success_threshold     = lookup(p, "success_threshold")
       failure_threshold     = lookup(p, "failure_threshold")
 
-      exec       = compact([lookup(p, "exec", "null")])
-      grpc       = compact([lookup(p, "grpc", "null")])
-      http_get   = compact([lookup(p, "http_get", "null")])
-      tcp_socket = compact([lookup(p, "tcp_socket", "null")])
+      exec       = compact([lookup(p, "exec", null)])
+      grpc       = compact([lookup(p, "grpc", null)])
+      http_get   = compact([lookup(p, "http_get", null)])
+      tcp_socket = compact([lookup(p, "tcp_socket", null)])
     }
   ]
   liveness_probes = [
@@ -39,10 +39,10 @@ locals {
       success_threshold     = lookup(p, "success_threshold")
       failure_threshold     = lookup(p, "failure_threshold")
 
-      exec       = compact([lookup(p, "exec", "null")])
-      grpc       = compact([lookup(p, "grpc", "null")])
-      http_get   = compact([lookup(p, "http_get", "null")])
-      tcp_socket = compact([lookup(p, "tcp_socket", "null")])
+      exec       = compact([lookup(p, "exec", null)])
+      grpc       = compact([lookup(p, "grpc", null)])
+      http_get   = compact([lookup(p, "http_get", null)])
+      tcp_socket = compact([lookup(p, "tcp_socket", null)])
     }
   ]
 }
