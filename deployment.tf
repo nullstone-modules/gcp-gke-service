@@ -89,34 +89,161 @@ resource "kubernetes_deployment_v1" "this" {
             }
           }
 
-          dynamic "liveness_probe" {
-            for_each = local.has_service ? [1] : []
+          dynamic "startup_probe" {
+            for_each = local.startup_probes
+            iterator = sp
 
             content {
-              failure_threshold     = 3
-              success_threshold     = 1
-              initial_delay_seconds = var.readiness_delay
-              period_seconds        = 10
-              timeout_seconds       = 1
+              initial_delay_seconds = sp.value.initial_delay_seconds
+              period_seconds        = sp.value.period_seconds
+              timeout_seconds       = sp.value.timeout_seconds
+              success_threshold     = sp.value.success_threshold
+              failure_threshold     = sp.value.failure_threshold
 
-              tcp_socket {
-                port = var.container_port
+              dynamic "exec" {
+                for_each = sp.value.exec
+                content {
+                  command = exec.value.command
+                }
+              }
+
+              dynamic "grpc" {
+                for_each = sp.value.grpc
+                content {
+                  port    = grpc.value.port
+                  service = lookup(grpc.value, "service", null)
+                }
+              }
+
+              dynamic "tcp_socket" {
+                for_each = sp.value.tcp_socket
+                content {
+                  port = tcp_socket.value.port
+                }
+              }
+
+              dynamic "http_get" {
+                for_each = sp.value.http_get
+                content {
+                  host   = lookup(http_get.value, "host", null)
+                  path   = lookup(http_get.value, "path", null)
+                  port   = lookup(http_get.value, "port", null)
+                  scheme = lookup(http_get.value, "scheme", null)
+
+                  dynamic "http_header" {
+                    for_each = coalesce(tomap(lookup(http_get.value, "http_headers", "null")), tomap({}))
+                    content {
+                      name  = http_header.key
+                      value = http_header.value
+                    }
+                  }
+                }
               }
             }
           }
 
           dynamic "readiness_probe" {
-            for_each = local.has_service ? [1] : []
+            for_each = local.readiness_probes
+            iterator = sp
 
             content {
-              failure_threshold     = 3
-              success_threshold     = 1
-              initial_delay_seconds = var.readiness_delay
-              period_seconds        = 10
-              timeout_seconds       = 1
+              initial_delay_seconds = sp.value.initial_delay_seconds
+              period_seconds        = sp.value.period_seconds
+              timeout_seconds       = sp.value.timeout_seconds
+              success_threshold     = sp.value.success_threshold
+              failure_threshold     = sp.value.failure_threshold
 
-              tcp_socket {
-                port = var.container_port
+              dynamic "exec" {
+                for_each = sp.value.exec
+                content {
+                  command = exec.value.command
+                }
+              }
+
+              dynamic "grpc" {
+                for_each = sp.value.grpc
+                content {
+                  port    = grpc.value.port
+                  service = lookup(grpc.value, "service", null)
+                }
+              }
+
+              dynamic "tcp_socket" {
+                for_each = sp.value.tcp_socket
+                content {
+                  port = tcp_socket.value.port
+                }
+              }
+
+              dynamic "http_get" {
+                for_each = sp.value.http_get
+                content {
+                  host   = lookup(http_get.value, "host", null)
+                  path   = lookup(http_get.value, "path", null)
+                  port   = lookup(http_get.value, "port", null)
+                  scheme = lookup(http_get.value, "scheme", null)
+
+                  dynamic "http_header" {
+                    for_each = coalesce(tomap(lookup(http_get.value, "http_headers", "null")), tomap({}))
+                    content {
+                      name  = http_header.key
+                      value = http_header.value
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          dynamic "liveness_probe" {
+            for_each = local.liveness_probes
+            iterator = lp
+
+            content {
+              initial_delay_seconds = lp.value.initial_delay_seconds
+              period_seconds        = lp.value.period_seconds
+              timeout_seconds       = lp.value.timeout_seconds
+              success_threshold     = lp.value.success_threshold
+              failure_threshold     = lp.value.failure_threshold
+
+              dynamic "exec" {
+                for_each = lp.value.exec
+                content {
+                  command = exec.value.command
+                }
+              }
+
+              dynamic "grpc" {
+                for_each = lp.value.grpc
+                content {
+                  port    = grpc.value.port
+                  service = lookup(grpc.value, "service", null)
+                }
+              }
+
+              dynamic "tcp_socket" {
+                for_each = lp.value.tcp_socket
+                content {
+                  port = tcp_socket.value.port
+                }
+              }
+
+              dynamic "http_get" {
+                for_each = lp.value.http_get
+                content {
+                  host   = lookup(http_get.value, "host", null)
+                  path   = lookup(http_get.value, "path", null)
+                  port   = lookup(http_get.value, "port", null)
+                  scheme = lookup(http_get.value, "scheme", null)
+
+                  dynamic "http_header" {
+                    for_each = coalesce(tomap(lookup(http_get.value, "http_headers", "null")), tomap({}))
+                    content {
+                      name  = http_header.key
+                      value = http_header.value
+                    }
+                  }
+                }
               }
             }
           }
