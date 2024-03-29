@@ -5,9 +5,9 @@ locals {
 
   startup_probes = [
     for p in local.cap_startup_probes : {
-      initial_delay_seconds = lookup(p, "initial_delay")
-      period_seconds        = lookup(p, "period")
-      timeout_seconds       = lookup(p, "timeout")
+      initial_delay_seconds = lookup(p, "initial_delay_seconds")
+      period_seconds        = lookup(p, "period_seconds")
+      timeout_seconds       = lookup(p, "timeout_seconds")
       success_threshold     = lookup(p, "success_threshold")
       failure_threshold     = lookup(p, "failure_threshold")
 
@@ -19,9 +19,9 @@ locals {
   ]
   readiness_probes = [
     for p in local.cap_readiness_probes : {
-      initial_delay_seconds = lookup(p, "initial_delay")
-      period_seconds        = lookup(p, "period")
-      timeout_seconds       = lookup(p, "timeout")
+      initial_delay_seconds = lookup(p, "initial_delay_seconds")
+      period_seconds        = lookup(p, "period_seconds")
+      timeout_seconds       = lookup(p, "timeout_seconds")
       success_threshold     = lookup(p, "success_threshold")
       failure_threshold     = lookup(p, "failure_threshold")
 
@@ -33,9 +33,9 @@ locals {
   ]
   liveness_probes = [
     for p in local.cap_liveness_probes : {
-      initial_delay_seconds = lookup(p, "initial_delay")
-      period_seconds        = lookup(p, "period")
-      timeout_seconds       = lookup(p, "timeout")
+      initial_delay_seconds = lookup(p, "initial_delay_seconds")
+      period_seconds        = lookup(p, "period_seconds")
+      timeout_seconds       = lookup(p, "timeout_seconds")
       success_threshold     = lookup(p, "success_threshold")
       failure_threshold     = lookup(p, "failure_threshold")
 
