@@ -11,10 +11,10 @@ locals {
       success_threshold     = lookup(p, "success_threshold")
       failure_threshold     = lookup(p, "failure_threshold")
 
-      exec       = compact([lookup(p, "exec", null)])
-      grpc       = compact([lookup(p, "grpc", null)])
-      http_get   = compact([lookup(p, "http_get", null)])
-      tcp_socket = compact([lookup(p, "tcp_socket", null)])
+      exec       = [for x in compact([lookup(p, "exec", null)]) : jsondecode(x)]
+      grpc       = [for x in compact([lookup(p, "grpc", null)]) : jsondecode(x)]
+      http_get   = [for x in compact([lookup(p, "http_get", null)]) : jsondecode(x)]
+      tcp_socket = [for x in compact([lookup(p, "tcp_socket", null)]) : jsondecode(x)]
     }
   ]
   readiness_probes = [
@@ -25,10 +25,10 @@ locals {
       success_threshold     = lookup(p, "success_threshold")
       failure_threshold     = lookup(p, "failure_threshold")
 
-      exec       = compact([lookup(p, "exec", null)])
-      grpc       = compact([lookup(p, "grpc", null)])
-      http_get   = compact([lookup(p, "http_get", null)])
-      tcp_socket = compact([lookup(p, "tcp_socket", null)])
+      exec       = [for x in compact([lookup(p, "exec", null)]) : jsondecode(x)]
+      grpc       = [for x in compact([lookup(p, "grpc", null)]) : jsondecode(x)]
+      http_get   = [for x in compact([lookup(p, "http_get", null)]) : jsondecode(x)]
+      tcp_socket = [for x in compact([lookup(p, "tcp_socket", null)]) : jsondecode(x)]
     }
   ]
   liveness_probes = [
@@ -39,10 +39,10 @@ locals {
       success_threshold     = lookup(p, "success_threshold")
       failure_threshold     = lookup(p, "failure_threshold")
 
-      exec       = compact([lookup(p, "exec", null)])
-      grpc       = compact([lookup(p, "grpc", null)])
-      http_get   = compact([lookup(p, "http_get", null)])
-      tcp_socket = compact([lookup(p, "tcp_socket", null)])
+      exec       = [for x in compact([lookup(p, "exec", null)]) : jsondecode(x)]
+      grpc       = [for x in compact([lookup(p, "grpc", null)]) : jsondecode(x)]
+      http_get   = [for x in compact([lookup(p, "http_get", null)]) : jsondecode(x)]
+      tcp_socket = [for x in compact([lookup(p, "tcp_socket", null)]) : jsondecode(x)]
     }
   ]
 }
