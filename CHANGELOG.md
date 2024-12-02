@@ -1,3 +1,6 @@
+# 0.6.18 (Dec 02, 2024)
+* When we have no secrets, do not create external secrets in kubernetes.
+
 # 0.6.17 (Mar 29, 2024)
 * Added capability support for `startupProbe`, `readinessProbe`, and `livenessProbe`.
 
