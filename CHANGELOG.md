@@ -1,3 +1,6 @@
+# 0.6.19 (Dec 02, 2024)
+* Fixed external secrets when we have no secrets.
+
 # 0.6.18 (Dec 02, 2024)
 * When we have no secrets, do not create external secrets in kubernetes.
 

@@ -61,7 +61,7 @@ resource "kubernetes_manifest" "gsm_secret_store" {
 resource "kubernetes_manifest" "secrets_from_gsm" {
   depends_on = [kubernetes_manifest.gsm_secret_store]
 
-  count = signum(local.secret_keys)
+  count = signum(length(local.secret_keys))
 
   manifest = {
     apiVersion = "external-secrets.io/v1beta1"
