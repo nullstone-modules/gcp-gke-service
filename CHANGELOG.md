@@ -1,3 +1,6 @@
+# 0.7.3 (Dec 06, 2024)
+* Create unique name for artifact repo member.
+
 # 0.7.2 (Dec 06, 2024)
 * Add permissions to read the image from the artifact registry.
 

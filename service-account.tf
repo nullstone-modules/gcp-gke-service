@@ -25,7 +25,7 @@ resource "google_service_account_iam_member" "app_workload_identity" {
   member             = "serviceAccount:${local.project_id}.svc.id.goog[${local.app_namespace}/${local.app_name}]"
 }
 
-resource "google_artifact_registry_repository_iam_member" "member" {
+resource "google_artifact_registry_repository_iam_member" "app_workload_identity" {
   project    = google_artifact_registry_repository.this.project
   location   = google_artifact_registry_repository.this.location
   repository = google_artifact_registry_repository.this.name
