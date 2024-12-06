@@ -48,4 +48,9 @@ locals {
     // nullstone labels
     "nullstone.io/app" = data.ns_workspace.this.block_name
   }, local.match_labels)
+  repo_labels = {
+    "nullstone-stack" = data.ns_workspace.this.stack_name
+    "nullstone-block" = data.ns_workspace.this.block_name
+    "nullstone-env"   = data.ns_workspace.this.env_name
+  }
 }

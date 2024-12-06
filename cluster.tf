@@ -4,7 +4,6 @@ data "ns_connection" "cluster_namespace" {
 }
 
 locals {
-  service_image          = data.google_container_registry_image.this.image_url
   cluster_name           = data.ns_connection.cluster_namespace.outputs.cluster_name
   cluster_endpoint       = data.ns_connection.cluster_namespace.outputs.cluster_endpoint
   cluster_ca_certificate = data.ns_connection.cluster_namespace.outputs.cluster_ca_certificate

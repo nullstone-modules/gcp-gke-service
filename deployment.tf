@@ -68,7 +68,7 @@ resource "kubernetes_deployment_v1" "this" {
 
         container {
           name  = local.main_container_name
-          image = "${local.service_image}:${local.app_version}"
+          image = "${local.repository_url}:${local.app_version}"
           args  = local.command
 
           security_context {
