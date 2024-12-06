@@ -1,69 +1,70 @@
-// This file is replaced by code-generation using 'capabilities.tf.tmpl'
+provider "ns" {
+  capability_id = 11177
+  alias         = "cap_11177"
+}
+
+module "cap_11177" {
+  source  = "api.nullstone.io/nullstone/gcp-redis-access/any"
+  version = "0.0.1"
+
+  app_metadata = local.app_metadata
+
+  providers = {
+    ns = ns.cap_11177
+  }
+}
+provider "ns" {
+  capability_id = 11178
+  alias         = "cap_11178"
+}
+
+module "cap_11178" {
+  source  = "api.nullstone.io/nullstone/gcp-postgres-access/any"
+  version = "0.0.3"
+
+  app_metadata = local.app_metadata
+
+
+  providers = {
+    ns = ns.cap_11178
+  }
+}
+
+module "caps" {
+  source  = "nullstone-modules/cap-merge/ns"
+  modules = local.modules
+}
+
 locals {
+  modules      = [module.cap_11177, module.cap_11178]
+  capabilities = module.caps.outputs
+
   cap_modules = [
     {
-      id         = 0
+      id         = 11177
       namespace  = ""
       env_prefix = ""
-      outputs    = {}
+      outputs    = module.cap_11177
+    }
+    , {
+      id         = 11178
+      namespace  = ""
+      env_prefix = ""
+      outputs    = module.cap_11178
     }
   ]
+}
 
-  cap_env_vars = {}
-  cap_secrets  = {}
+locals {
+  cap_env_vars = merge([
+    for mod in local.cap_modules : {
+      for item in lookup(mod.outputs, "env", []) : "${mod.env_prefix}${item.name}" => item.value
+    }
+  ]...)
 
-  capabilities = {
-    env = [
-      {
-        name  = ""
-        value = ""
-      }
-    ]
-
-    secrets = [
-      {
-        name  = ""
-        value = ""
-      }
-    ]
-
-    volumes = [
-      {
-        name      = ""
-        empty_dir = jsonencode({})
-        persistent_volume_claim = jsonencode({
-          claim_name = ""    // Required
-          read_only  = false // Optional
-        })
-      }
-    ]
-
-    volume_mounts = [
-      {
-        name              = ""   // Required
-        mount_path        = ""   // Required
-        sub_path          = null // Path within the volume from which the container's volume should be mounted
-        mount_propagation = null
-        read_only         = null // Defaults to false
-      }
-    ]
-
-    // private_urls follows a wonky syntax so that we can send all capability outputs into the merge module
-    // Terraform requires that all members be of type list(map(any))
-    // They will be flattened into list(string) when we output from this module
-    private_urls = [
-      {
-        url = ""
-      }
-    ]
-
-    // public_urls follows a wonky syntax so that we can send all capability outputs into the merge module
-    // Terraform requires that all members be of type list(map(any))
-    // They will be flattened into list(string) when we output from this module
-    public_urls = [
-      {
-        url = ""
-      }
-    ]
-  }
+  cap_secrets = merge([
+    for mod in local.cap_modules : {
+      for item in lookup(mod.outputs, "secrets", []) : "${mod.env_prefix}${item.name}" => item.value
+    }
+  ]...)
 }

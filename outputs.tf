@@ -1,5 +1,5 @@
 output "image_repo_url" {
-  value       = data.google_container_registry_image.this.image_url
+  value       = local.repository_url
   description = "string ||| Service container image url."
 }
 

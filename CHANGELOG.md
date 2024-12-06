@@ -1,3 +1,7 @@
+# 0.7.0 (Dec 06, 2024)
+* Swapped to artifact registry repository from older container registry.
+* Upgraded all providers including `google` to version 6.12.0.
+
 # 0.6.19 (Dec 02, 2024)
 * Fixed external secrets when we have no secrets.
 
