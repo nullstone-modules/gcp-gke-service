@@ -1,3 +1,6 @@
+# 0.7.1 (Dec 06, 2024)
+* Fix the repository_url
+
 # 0.7.0 (Dec 06, 2024)
 * Swapped to artifact registry repository from older container registry.
 * Upgraded all providers including `google` to version 6.12.0.
