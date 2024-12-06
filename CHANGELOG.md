@@ -1,3 +1,6 @@
+# 0.7.2 (Dec 06, 2024)
+* Add permissions to read the image from the artifact registry.
+
 # 0.7.1 (Dec 06, 2024)
 * Fix the repository_url
 
