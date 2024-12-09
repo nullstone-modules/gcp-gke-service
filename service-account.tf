@@ -25,18 +25,18 @@ resource "google_service_account_iam_member" "app_workload_identity" {
   member             = "serviceAccount:${local.project_id}.svc.id.goog[${local.app_namespace}/${local.app_name}]"
 }
 
+resource "google_service_account_iam_member" "app_generate_token" {
+  service_account_id = google_service_account.app.name
+  role               = "roles/iam.serviceAccountTokenCreator"
+  member             = "serviceAccount:${local.project_id}.svc.id.goog[${local.app_namespace}/${local.app_name}]"
+}
+
 resource "google_artifact_registry_repository_iam_member" "app_workload_identity" {
   project    = google_artifact_registry_repository.this.project
   location   = google_artifact_registry_repository.this.location
   repository = google_artifact_registry_repository.this.name
   role       = "roles/artifactregistry.reader"
-  member     = "serviceAccount:${local.project_id}.svc.id.goog[${local.app_namespace}/${local.app_name}]"
-}
-
-resource "google_service_account_iam_member" "app_generate_token" {
-  service_account_id = google_service_account.app.name
-  role               = "roles/iam.serviceAccountTokenCreator"
-  member             = "serviceAccount:${local.project_id}.svc.id.goog[${local.app_namespace}/${local.app_name}]"
+  member     = "serviceAccount:${google_service_account.app.email}"
 }
 
 // See https://cloud.google.com/kubernetes-engine/docs/tutorials/workload-identity-secrets
