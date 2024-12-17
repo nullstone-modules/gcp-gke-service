@@ -1,6 +1,6 @@
 locals {
-  truncated_len = min(length(local.block_ref), 28 - length("deployer--12345"))
-  deployer_name = "deployer-${substr(local.block_ref, 0, local.truncated_len)}-${random_string.resource_suffix.result}"
+  max_deployer_name_len = 30 - length("deployer--12345")
+  deployer_name         = "deployer-${substr(local.block_ref, 0, local.max_deployer_name_len)}-${random_string.resource_suffix.result}"
 }
 
 resource "google_service_account" "deployer" {

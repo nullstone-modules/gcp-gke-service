@@ -1,5 +1,10 @@
+locals {
+  max_pusher_name_len = 30 - length("pusher--12345")
+  pusher_name         = "pusher-${substr(local.block_ref, 0, local.max_pusher_name_len)}-${random_string.resource_suffix.result}"
+}
+
 resource "google_service_account" "image_pusher" {
-  account_id   = "pusher-${local.resource_name}"
+  account_id   = local.pusher_name
   display_name = "Image Pusher for ${local.app_name}"
 }
 

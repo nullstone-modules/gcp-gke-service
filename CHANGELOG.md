@@ -1,3 +1,13 @@
+# 0.7.6 (Dec 17, 2024)
+* Truncate image pusher service account name so it's less than max allowed of 30 characters.
+* Fix deployer service account name so it's less than max allowed of 30 characters.
+
+# 0.7.5 (Dec 09, 2024)
+* Remove unnecessary permissions to read from artifact registry.
+
+# 0.7.4 (Dec 09, 2024)
+* Fix service account to read from artifact registry.
+
 # 0.7.3 (Dec 06, 2024)
 * Create unique name for artifact repo member.
 
