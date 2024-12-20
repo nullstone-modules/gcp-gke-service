@@ -8,6 +8,26 @@ output "log_provider" {
   description = "string ||| The log provider used for this service."
 }
 
+output "metrics_provider" {
+  value       = "cloudmonitoring"
+  description = "string ||| "
+}
+
+output "metrics_reader" {
+  value = {
+    email       = try(google_service_account.deployer.email, "")
+    private_key = try(google_service_account_key.deployer.private_key, "")
+  }
+
+  description = "object({ email: string, private_key: string }) ||| A GCP service account with explicit privilege to view metrics for this application."
+  sensitive   = true
+}
+
+output "metrics_mappings" {
+  value       = local.metrics_mappings
+  description = "string ||| A mapping of metric definitions used to render app metrics in the Nullstone UI."
+}
+
 output "service_name" {
   value       = local.app_name
   description = "string ||| The name of the kubernetes deployment for the app."
