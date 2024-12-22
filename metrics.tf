@@ -17,21 +17,25 @@ EOF
 
       mappings = {
         cpu_reserved = {
+          project_id      = local.project_id
           metric_name     = "container.googleapis.com/container/cpu/request_cores"
           aggregation     = "sum"
           resource_filter = local.app_resource_metrics_filter
         }
         cpu_average = {
+          project_id      = local.project_id
           metric_name     = "container.googleapis.com/container/cpu/usage_time"
           aggregation     = "average"
           resource_filter = local.app_resource_metrics_filter
         }
         cpu_min = {
+          project_id      = local.project_id
           metric_name     = "container.googleapis.com/container/cpu/usage_time"
           aggregation     = "min"
           resource_filter = local.app_resource_metrics_filter
         }
         cpu_max = {
+          project_id      = local.project_id
           metric_name     = "container.googleapis.com/container/cpu/usage_time"
           aggregation     = "max"
           resource_filter = local.app_resource_metrics_filter
@@ -45,21 +49,25 @@ EOF
 
       mappings = {
         memory_reserved = {
+          project_id      = local.project_id
           metric_name     = "container.googleapis.com/container/memory/request_bytes"
           aggregation     = "sum"
           resource_filter = local.app_resource_metrics_filter
         }
         memory_average = {
+          project_id      = local.project_id
           metric_name     = "container.googleapis.com/container/memory/bytes_used"
           aggregation     = "average"
           resource_filter = local.app_resource_metrics_filter
         }
         memory_min = {
+          project_id      = local.project_id
           metric_name     = "container.googleapis.com/container/memory/bytes_used"
           aggregation     = "min"
           resource_filter = local.app_resource_metrics_filter
         }
         memory_max = {
+          project_id      = local.project_id
           metric_name     = "container.googleapis.com/container/memory/bytes_used"
           aggregation     = "max"
           resource_filter = local.app_resource_metrics_filter
