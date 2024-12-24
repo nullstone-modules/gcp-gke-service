@@ -4,8 +4,7 @@ locals {
   cap_metrics = []
 
   app_resource_metrics_filter = <<EOF
-resource.type = "k8s_pod"
-AND resource.labels.cluster_name = "${local.cluster_name}"
+resource.labels.cluster_name = "${local.cluster_name}"
 AND resource.labels.namespace_name = "${local.app_namespace}"
 AND metadata.user_labels."nullstone.io/app" = "${local.app_name}"
 EOF
@@ -18,25 +17,25 @@ EOF
       mappings = {
         cpu_reserved = {
           project_id      = local.project_id
-          metric_name     = "container.googleapis.com/container/cpu/request_cores"
+          metric_name     = "kubernetes.io/container/cpu/limit_cores"
           aggregation     = "sum"
           resource_filter = local.app_resource_metrics_filter
         }
         cpu_average = {
           project_id      = local.project_id
-          metric_name     = "container.googleapis.com/container/cpu/usage_time"
+          metric_name     = "kubernetes.io/container/cpu/core_usage_time"
           aggregation     = "average"
           resource_filter = local.app_resource_metrics_filter
         }
         cpu_min = {
           project_id      = local.project_id
-          metric_name     = "container.googleapis.com/container/cpu/usage_time"
+          metric_name     = "kubernetes.io/container/cpu/core_usage_time"
           aggregation     = "min"
           resource_filter = local.app_resource_metrics_filter
         }
         cpu_max = {
           project_id      = local.project_id
-          metric_name     = "container.googleapis.com/container/cpu/usage_time"
+          metric_name     = "kubernetes.io/container/cpu/core_usage_time"
           aggregation     = "max"
           resource_filter = local.app_resource_metrics_filter
         }
@@ -50,29 +49,35 @@ EOF
       mappings = {
         memory_reserved = {
           project_id      = local.project_id
-          metric_name     = "container.googleapis.com/container/memory/request_bytes"
+          metric_name     = "kubernetes.io/container/memory/request_bytes"
           aggregation     = "sum"
           resource_filter = local.app_resource_metrics_filter
         }
         memory_average = {
           project_id      = local.project_id
-          metric_name     = "container.googleapis.com/container/memory/bytes_used"
+          metric_name     = "kubernetes.io/container/memory/used_bytes"
           aggregation     = "average"
           resource_filter = local.app_resource_metrics_filter
         }
         memory_min = {
           project_id      = local.project_id
-          metric_name     = "container.googleapis.com/container/memory/bytes_used"
+          metric_name     = "kubernetes.io/container/memory/used_bytes"
           aggregation     = "min"
           resource_filter = local.app_resource_metrics_filter
         }
         memory_max = {
           project_id      = local.project_id
-          metric_name     = "container.googleapis.com/container/memory/bytes_used"
+          metric_name     = "kubernetes.io/container/memory/used_bytes"
           aggregation     = "max"
           resource_filter = local.app_resource_metrics_filter
         }
       }
     }
   ]
+}
+
+resource "google_project_iam_member" "deployer_metrics_viewer" {
+  project = local.project_id
+  role    = "roles/monitoring.viewer"
+  member  = "serviceAccount:${google_service_account.deployer.email}"
 }
