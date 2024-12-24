@@ -23,19 +23,19 @@ EOF
         }
         cpu_average = {
           project_id      = local.project_id
-          metric_name     = "kubernetes.io/container/cpu/core_usage_time"
+          metric_name     = "kubernetes.io/container/cpu/request_utilization"
           aggregation     = "average"
           resource_filter = local.app_resource_metrics_filter
         }
         cpu_min = {
           project_id      = local.project_id
-          metric_name     = "kubernetes.io/container/cpu/core_usage_time"
+          metric_name     = "kubernetes.io/container/cpu/request_utilization"
           aggregation     = "min"
           resource_filter = local.app_resource_metrics_filter
         }
         cpu_max = {
           project_id      = local.project_id
-          metric_name     = "kubernetes.io/container/cpu/core_usage_time"
+          metric_name     = "kubernetes.io/container/cpu/request_utilization"
           aggregation     = "max"
           resource_filter = local.app_resource_metrics_filter
         }
