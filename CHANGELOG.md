@@ -1,3 +1,6 @@
+# 0.7.7 (Dec 27, 2024)
+* Added support for app metrics.
+
 # 0.7.6 (Dec 17, 2024)
 * Truncate image pusher service account name so it's less than max allowed of 30 characters.
 * Fix deployer service account name so it's less than max allowed of 30 characters.
