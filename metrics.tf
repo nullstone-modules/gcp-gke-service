@@ -3,11 +3,11 @@ locals {
 
   cap_metrics = []
 
-  app_resource_metrics_filter = <<EOF
-resource.labels.cluster_name = "${local.cluster_name}"
-AND resource.labels.namespace_name = "${local.app_namespace}"
-AND metadata.user_labels."nullstone.io/app" = "${local.app_name}"
-EOF
+  // Resources
+  // - https://cloud.google.com/stackdriver/docs/managed-prometheus/promql
+  pod_name_regex = "^${local.app_name}-[0-9a-f]{10}-.*$"
+  query_filter   = "monitored_resource=\"k8s_container\",cluster_name=\"${local.cluster_name}\",namespace_name=\"${local.app_namespace}\",pod_name=~\"${local.pod_name_regex}\""
+
   base_metrics = [
     {
       name = "app/cpu"
@@ -16,28 +16,16 @@ EOF
 
       mappings = {
         cpu_reserved = {
-          project_id      = local.project_id
-          metric_name     = "kubernetes.io/container/cpu/limit_cores"
-          aggregation     = "sum"
-          resource_filter = local.app_resource_metrics_filter
+          query = "avg(kubernetes_io:container_cpu_limit_cores{${local.query_filter}})"
         }
         cpu_average = {
-          project_id      = local.project_id
-          metric_name     = "kubernetes.io/container/cpu/request_utilization"
-          aggregation     = "average"
-          resource_filter = local.app_resource_metrics_filter
+          query = "avg(kubernetes_io:container_cpu_request_utilization{${local.query_filter}})"
         }
         cpu_min = {
-          project_id      = local.project_id
-          metric_name     = "kubernetes.io/container/cpu/request_utilization"
-          aggregation     = "min"
-          resource_filter = local.app_resource_metrics_filter
+          query = "min(kubernetes_io:container_cpu_request_utilization{${local.query_filter}})"
         }
         cpu_max = {
-          project_id      = local.project_id
-          metric_name     = "kubernetes.io/container/cpu/request_utilization"
-          aggregation     = "max"
-          resource_filter = local.app_resource_metrics_filter
+          query = "max(kubernetes_io:container_cpu_request_utilization{${local.query_filter}})"
         }
       }
     },
@@ -48,28 +36,16 @@ EOF
 
       mappings = {
         memory_reserved = {
-          project_id      = local.project_id
-          metric_name     = "kubernetes.io/container/memory/request_bytes"
-          aggregation     = "sum"
-          resource_filter = local.app_resource_metrics_filter
+          query = "avg(kubernetes_io:container_memory_request_bytes{${local.query_filter}})"
         }
         memory_average = {
-          project_id      = local.project_id
-          metric_name     = "kubernetes.io/container/memory/used_bytes"
-          aggregation     = "average"
-          resource_filter = local.app_resource_metrics_filter
+          query = "avg(kubernetes_io:container_memory_used_bytes{${local.query_filter}})"
         }
         memory_min = {
-          project_id      = local.project_id
-          metric_name     = "kubernetes.io/container/memory/used_bytes"
-          aggregation     = "min"
-          resource_filter = local.app_resource_metrics_filter
+          query = "min(kubernetes_io:container_memory_used_bytes{${local.query_filter}})"
         }
         memory_max = {
-          project_id      = local.project_id
-          metric_name     = "kubernetes.io/container/memory/used_bytes"
-          aggregation     = "max"
-          resource_filter = local.app_resource_metrics_filter
+          query = "max(kubernetes_io:container_memory_used_bytes{${local.query_filter}})"
         }
       }
     }

@@ -1,3 +1,8 @@
+output "project_id" {
+  value       = local.project_id
+  description = "string ||| The GCP Project ID where this application is hosted."
+}
+
 output "image_repo_url" {
   value       = local.repository_url
   description = "string ||| Service container image url."
