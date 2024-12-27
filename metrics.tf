@@ -19,13 +19,13 @@ locals {
           query = "avg(kubernetes_io:container_cpu_limit_cores{${local.query_filter}})"
         }
         cpu_average = {
-          query = "avg(kubernetes_io:container_cpu_request_utilization{${local.query_filter}})"
+          query = "(avg(kubernetes_io:container_cpu_request_utilization{${local.query_filter}}))*100"
         }
         cpu_min = {
-          query = "min(kubernetes_io:container_cpu_request_utilization{${local.query_filter}})"
+          query = "(min(kubernetes_io:container_cpu_request_utilization{${local.query_filter}}))*100"
         }
         cpu_max = {
-          query = "max(kubernetes_io:container_cpu_request_utilization{${local.query_filter}})"
+          query = "(max(kubernetes_io:container_cpu_request_utilization{${local.query_filter}}))*100"
         }
       }
     },
