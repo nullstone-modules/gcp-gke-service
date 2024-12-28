@@ -1,3 +1,7 @@
+# 0.7.8 (Dec 28, 2024)
+* Adjusted memory metrics to output MB.
+* Created consistent cpu metrics in number of cores.
+
 # 0.7.7 (Dec 27, 2024)
 * Added support for app metrics.
 

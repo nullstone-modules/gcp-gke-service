@@ -12,20 +12,20 @@ locals {
     {
       name = "app/cpu"
       type = "usage"
-      unit = "%"
+      unit = "cores"
 
       mappings = {
         cpu_reserved = {
-          query = "avg(kubernetes_io:container_cpu_limit_cores{${local.query_filter}})"
+          query = "avg(kubernetes_io:container_cpu_request_cores{${local.query_filter}})"
         }
         cpu_average = {
-          query = "(avg(kubernetes_io:container_cpu_request_utilization{${local.query_filter}}))*100"
+          query = "(avg(kubernetes_io:container_cpu_request_utilization{${local.query_filter}}))*(avg(kubernetes_io:container_cpu_request_cores{${local.query_filter}}))"
         }
         cpu_min = {
-          query = "(min(kubernetes_io:container_cpu_request_utilization{${local.query_filter}}))*100"
+          query = "(min(kubernetes_io:container_cpu_request_utilization{${local.query_filter}}))*(avg(kubernetes_io:container_cpu_request_cores{${local.query_filter}}))"
         }
         cpu_max = {
-          query = "(max(kubernetes_io:container_cpu_request_utilization{${local.query_filter}}))*100"
+          query = "(max(kubernetes_io:container_cpu_request_utilization{${local.query_filter}}))*(avg(kubernetes_io:container_cpu_request_cores{${local.query_filter}}))"
         }
       }
     },
@@ -36,16 +36,16 @@ locals {
 
       mappings = {
         memory_reserved = {
-          query = "avg(kubernetes_io:container_memory_request_bytes{${local.query_filter}})"
+          query = "(avg(kubernetes_io:container_memory_request_bytes{${local.query_filter}}))/1048576"
         }
         memory_average = {
-          query = "avg(kubernetes_io:container_memory_used_bytes{${local.query_filter}})"
+          query = "(avg(kubernetes_io:container_memory_used_bytes{${local.query_filter}}))/1048576"
         }
         memory_min = {
-          query = "min(kubernetes_io:container_memory_used_bytes{${local.query_filter}})"
+          query = "(min(kubernetes_io:container_memory_used_bytes{${local.query_filter}}))/1048576"
         }
         memory_max = {
-          query = "max(kubernetes_io:container_memory_used_bytes{${local.query_filter}})"
+          query = "(max(kubernetes_io:container_memory_used_bytes{${local.query_filter}}))/1048576"
         }
       }
     }
