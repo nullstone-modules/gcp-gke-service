@@ -4,7 +4,7 @@ locals {
   // If this module has URLs, add them here as list(string)
   additional_private_urls = local.has_service ? [
     "http://${local.service_name}:${var.service_port}",
-    "http://${local.service_name}:${local.kubernetes_namespace}.svc.cluster.local:${var.service_port}",
+    "http://${local.service_name}.${local.kubernetes_namespace}.svc.cluster.local:${var.service_port}",
   ] : []
   additional_public_urls = []
 

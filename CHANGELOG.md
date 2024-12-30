@@ -1,3 +1,6 @@
+# 0.7.10 (Dec 30, 2024)
+* Fixed fully-qualified private url (`.` instead of `:` between subdomain parts).
+
 # 0.7.9 (Dec 30, 2024)
 * Added `http://<service-name>:<service-port>` to private urls when `var.service_port` is specified.
 
