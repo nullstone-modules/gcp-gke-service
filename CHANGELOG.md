@@ -1,3 +1,6 @@
+# 0.7.9 (Dec 30, 2024)
+* Added `http://<service-name>:<service-port>` to private urls when `var.service_port` is specified.
+
 # 0.7.8 (Dec 28, 2024)
 * Adjusted memory metrics to output MB.
 * Created consistent cpu metrics in number of cores.
