@@ -1,6 +1,10 @@
 locals {
   // Valid metadata name: [a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*
   app_secret_store_name = "${local.resource_name}-gsm-secrets"
+
+  // secret_refs is prepared in the form [{ name = "", valueFrom = "<arn>" }, ...] for injection into ECS services
+  secret_refs     = [for key in local.secret_keys : { name = key, valueFrom = aws_secretsmanager_secret.app_secret[key].arn }]
+  all_secret_refs = concat(local.secret_refs, local.existing_secret_refs)
 }
 
 resource "google_secret_manager_secret" "app_secret" {
