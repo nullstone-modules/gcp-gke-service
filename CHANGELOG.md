@@ -1,4 +1,4 @@
-# 0.7.11 (Unreleased)
+# 0.7.11 (Jan 01, 2025)
 * Added support for `{{ secret(<secret-id>) }}`.
 
 # 0.7.10 (Dec 30, 2024)
