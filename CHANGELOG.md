@@ -1,3 +1,6 @@
+# 0.7.11 (Unreleased)
+* Added support for `{{ secret(<secret-id>) }}`.
+
 # 0.7.10 (Dec 30, 2024)
 * Fixed fully-qualified private url (`.` instead of `:` between subdomain parts).
 

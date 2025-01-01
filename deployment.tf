@@ -266,7 +266,7 @@ resource "kubernetes_deployment_v1" "this" {
           }
 
           dynamic "env" {
-            for_each = local.secret_keys
+            for_each = local.all_secret_keys
 
             content {
               name = env.value
