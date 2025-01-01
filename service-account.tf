@@ -33,9 +33,9 @@ resource "google_service_account_iam_member" "app_generate_token" {
 
 // See https://cloud.google.com/kubernetes-engine/docs/tutorials/workload-identity-secrets
 resource "google_secret_manager_secret_iam_member" "k8s_access" {
-  for_each = local.secret_keys
+  for_each = local.all_secret_keys
 
-  secret_id = google_secret_manager_secret.app_secret[each.key].secret_id
+  secret_id = local.all_secret_refs[each.key]
   project   = local.project_id
   role      = "roles/secretmanager.secretAccessor"
   member    = "serviceAccount:${google_service_account.app.email}"

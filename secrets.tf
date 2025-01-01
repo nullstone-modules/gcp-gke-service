@@ -1,10 +1,26 @@
 locals {
-  // Valid metadata name: [a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*
-  app_secret_store_name = "${local.resource_name}-gsm-secrets"
+  input_secrets     = merge(local.cap_secrets, var.secrets)
+  input_secret_keys = nonsensitive(concat(keys(local.cap_secrets), keys(var.secrets)))
+}
+
+// ns_secret_keys.this is used to calculate a set of secrets to add to gcp secrets manager
+// The resulting `secret_keys` attribute must be known at plan time
+// This doesn't need to do a full interpolation because we only care about which inputs need to be added to gcp secrets manager
+// ns_secret_keys.input_env_variables should contain only var.env_vars since they could contain interpolation that promotes them to sensitive
+// We exclude `local.cap_env_vars` because capabilities must use `cap_secrets` to create secrets
+data "ns_secret_keys" "this" {
+  input_env_variables = var.env_vars
+  input_secret_keys   = local.input_secret_keys
+}
+
+locals {
+  base_secret_keys     = data.ns_secret_keys.this.secret_keys
+  existing_secret_keys = keys(data.ns_env_variables.this.secret_refs)
+  all_secret_keys      = toset(concat(tolist(local.base_secret_keys), local.existing_secret_keys))
 }
 
 resource "google_secret_manager_secret" "app_secret" {
-  for_each = local.secret_keys
+  for_each = local.base_secret_keys
 
   // Valid secret_id: [[a-zA-Z_0-9]+]
   secret_id = lower(replace("${local.resource_name}_${each.value}", "/[^a-zA-Z_0-9]/", "_"))
@@ -16,10 +32,22 @@ resource "google_secret_manager_secret" "app_secret" {
 }
 
 resource "google_secret_manager_secret_version" "app_secret" {
-  for_each = local.secret_keys
+  for_each = local.base_secret_keys
 
   secret      = google_secret_manager_secret.app_secret[each.value].id
   secret_data = local.all_secrets[each.value]
+}
+
+locals {
+  // Valid metadata name: [a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*
+  app_secret_store_name = "${local.resource_name}-gsm-secrets"
+
+  // secret refs are prepared as a map in the form name:"<secret-id>"
+  // base => user-injected + capability secrets
+  // existing => user-injected with format `secret(...)`
+  base_secret_refs     = { for key in local.base_secret_keys : key => google_secret_manager_secret.app_secret[key].secret_id }
+  existing_secret_refs = data.ns_env_variables.this.secret_refs
+  all_secret_refs      = merge(local.base_secret_refs, local.existing_secret_refs)
 }
 
 // The secret store defines "how" to access google secrets manager
@@ -61,7 +89,7 @@ resource "kubernetes_manifest" "gsm_secret_store" {
 resource "kubernetes_manifest" "secrets_from_gsm" {
   depends_on = [kubernetes_manifest.gsm_secret_store]
 
-  count = signum(length(local.secret_keys))
+  count = signum(length(local.all_secret_keys))
 
   manifest = {
     apiVersion = "external-secrets.io/v1beta1"
@@ -81,10 +109,10 @@ resource "kubernetes_manifest" "secrets_from_gsm" {
       target = {
         name = "${local.resource_name}-gsm-secrets"
       }
-      data = [for key in local.secret_keys : {
+      data = [for key in local.all_secret_keys : {
         secretKey = key
         remoteRef = {
-          key = google_secret_manager_secret.app_secret[key].secret_id
+          key = local.all_secret_refs[key]
         }
       }]
     }
