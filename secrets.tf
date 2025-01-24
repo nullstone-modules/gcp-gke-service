@@ -53,7 +53,7 @@ locals {
   // base => user-injected + capability secrets
   // existing => user-injected with format `secret(...)`
   base_secret_refs     = { for key in local.base_secret_keys : key => google_secret_manager_secret.app_secret[key].secret_id }
-  existing_secret_refs = data.ns_env_variables.this.secret_refs
+  existing_secret_refs = data.ns_env_variables.existing.secret_refs
   all_secret_refs      = merge(local.base_secret_refs, local.existing_secret_refs)
 }
 
@@ -116,10 +116,10 @@ resource "kubernetes_manifest" "secrets_from_gsm" {
       target = {
         name = "${local.resource_name}-gsm-secrets"
       }
-      data = [for key in local.all_secret_keys : {
+      data = [for key, value in local.all_secret_refs : {
         secretKey = key
         remoteRef = {
-          key = local.all_secret_refs[key]
+          key = value
         }
       }]
     }

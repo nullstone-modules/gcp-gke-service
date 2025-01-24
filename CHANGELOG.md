@@ -1,3 +1,6 @@
+# 0.7.13 (Jan 24, 2025)
+* Fixed bug with kubernetes secret store as a result of previous secrets fix.
+
 # 0.7.12 (Jan 24, 2025)
 * Prevent issue with dynamic calculation of secrets introduced with support for `{{ secret() }}`.
 
