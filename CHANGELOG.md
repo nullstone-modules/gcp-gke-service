@@ -1,3 +1,6 @@
+# 0.7.12 (Jan 24, 2025)
+* Prevent issue with dynamic calculation of secrets introduced with support for `{{ secret() }}`.
+
 # 0.7.11 (Jan 01, 2025)
 * Added support for `{{ secret(<secret-id>) }}`.
 

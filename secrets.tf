@@ -13,9 +13,16 @@ data "ns_secret_keys" "this" {
   input_secret_keys   = local.input_secret_keys
 }
 
+// "existing" adds support for the `secret(...)` syntax
+// This only supports `secret(...)` specified by the user
+data "ns_env_variables" "existing" {
+  input_env_variables = var.env_vars
+  input_secrets       = {}
+}
+
 locals {
   base_secret_keys     = data.ns_secret_keys.this.secret_keys
-  existing_secret_keys = keys(data.ns_env_variables.this.secret_refs)
+  existing_secret_keys = keys(data.ns_env_variables.existing.secret_refs)
   all_secret_keys      = toset(concat(tolist(local.base_secret_keys), local.existing_secret_keys))
 }
 
