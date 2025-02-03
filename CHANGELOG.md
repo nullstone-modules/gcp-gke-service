@@ -1,3 +1,6 @@
+# 0.7.14 (Unreleased)
+* Fixed configuration of startup, liveness, and readiness probes.
+
 # 0.7.13 (Jan 24, 2025)
 * Fixed bug with kubernetes secret store as a result of previous secrets fix.
 
