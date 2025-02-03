@@ -6,6 +6,10 @@ locals {
 resource "kubernetes_service_v1" "this" {
   count = local.has_service ? 1 : 0
 
+  lifecycle {
+    ignore_changes = [metadata[0].annotations]
+  }
+
   metadata {
     name      = local.service_name
     namespace = local.app_namespace
