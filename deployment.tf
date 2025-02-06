@@ -273,7 +273,7 @@ resource "kubernetes_deployment_v1" "this" {
 
               value_from {
                 secret_key_ref {
-                  name = "${local.resource_name}-gsm-secrets"
+                  name = local.app_secret_store_name
                   key  = env.value
                 }
               }

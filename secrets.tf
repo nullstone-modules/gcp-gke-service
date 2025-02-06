@@ -104,7 +104,7 @@ resource "kubernetes_manifest" "secrets_from_gsm" {
 
     metadata = {
       namespace = local.app_namespace
-      name      = "${local.resource_name}-gsm-secrets"
+      name      = local.app_secret_store_name
       labels    = local.labels
     }
 
@@ -114,7 +114,7 @@ resource "kubernetes_manifest" "secrets_from_gsm" {
         name = local.app_secret_store_name
       }
       target = {
-        name = "${local.resource_name}-gsm-secrets"
+        name = local.app_secret_store_name
       }
       data = [for key, value in local.all_secret_refs : {
         secretKey = key
