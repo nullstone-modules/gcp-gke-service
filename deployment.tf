@@ -184,7 +184,7 @@ resource "kubernetes_deployment_v1" "this" {
                   scheme = lookup(http_get.value, "scheme", null)
 
                   dynamic "http_header" {
-                    for_each = coalesce(tomap(lookup(http_get.value, "http_headers", "null")), tomap({}))
+                    for_each = coalesce(tomap(lookup(http_get.value, "http_headers", null)), tomap({}))
                     content {
                       name  = http_header.key
                       value = http_header.value

@@ -1,3 +1,7 @@
+# 0.7.14 (Feb 06, 2025)
+* Fixed configuration of startup, liveness, and readiness probes.
+* Ignore changes to K8s Service `annotations` to prevent clobbering auto-generated annotations.
+
 # 0.7.13 (Jan 24, 2025)
 * Fixed bug with kubernetes secret store as a result of previous secrets fix.
 
