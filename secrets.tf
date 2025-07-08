@@ -61,7 +61,7 @@ locals {
 // This secret store is only responsible for establishing authentication config
 resource "kubernetes_manifest" "gsm_secret_store" {
   manifest = {
-    apiVersion = "external-secrets.io/v1beta1"
+    apiVersion = "external-secrets.io/v1"
     kind       = "SecretStore"
 
     metadata = {

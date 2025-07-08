@@ -1,3 +1,7 @@
+# 0.7.15 (Jul 08, 2025)
+* Upgraded usage of secret store from v1beta1 to v1.
+* Upgraded terraform providers to latest.
+
 # 0.7.14 (Feb 06, 2025)
 * Fixed configuration of startup, liveness, and readiness probes.
 * Ignore changes to K8s Service `annotations` to prevent clobbering auto-generated annotations.
