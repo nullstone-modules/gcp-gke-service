@@ -2,7 +2,8 @@
 locals {
   cap_modules = [
     {
-      id         = 0
+      name       = ""
+      tfId       = ""
       namespace  = ""
       env_prefix = ""
       outputs    = {}

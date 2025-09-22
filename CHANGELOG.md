@@ -1,3 +1,6 @@
+# 0.8.0 (Sep 22, 2025)
+* Upgraded terraform providers.
+
 # 0.7.15 (Jul 08, 2025)
 * Upgraded usage of secret store from v1beta1 to v1.
 * Upgraded terraform providers to latest.

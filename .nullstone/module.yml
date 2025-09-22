@@ -11,3 +11,4 @@ subplatform: gke
 type: ""
 appCategories: []
 is_public: true
+tool_name: "terraform"

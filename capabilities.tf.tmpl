@@ -1,7 +1,7 @@
 {{ range . -}}
 provider "ns" {
-  capability_id = {{ .Id }}
-  alias         = "cap_{{ .Id }}"
+  capability_name = "{{ .Name }}"
+  alias           = "{{ .TfModuleName }}"
 }
 
 module "{{ .TfModuleName }}" {
@@ -11,13 +11,12 @@ module "{{ .TfModuleName }}" {
   {{- end }}
 
   app_metadata = local.app_metadata
-  {{ range $key, $value := .Variables -}}
-  {{ if $value.HasValue -}}
+  {{ range $key, $value := .Variables -}}{{- if $value.HasValue }}
   {{ $key }} = jsondecode({{ $value.Value | to_json_string }})
-  {{- end }}
-  {{ end }}
+  {{- end -}}{{- end }}
+
   providers = {
-    ns = ns.cap_{{ .Id}}
+    ns = ns.{{ .TfModuleName }}
   }
 }
 {{ end }}
@@ -37,7 +36,8 @@ locals {
   cap_modules = [
 {{- range $index, $element := .ExceptNeedsDestroyed }}
     {{ if $index }}, {{ end }}{
-      id         = {{ $element.Id }}
+      name       = "{{ $element.Name }}"
+      tfId       = "{{ $element.TfId }}"
       namespace  = "{{ $element.Namespace }}"
       env_prefix = "{{ $element.EnvPrefix }}"
       outputs    = {{ $element.TfModuleAddr }}
@@ -55,7 +55,7 @@ locals {
 
   cap_secrets = merge([
     for mod in local.cap_modules : {
-      for item in lookup(mod.outputs, "secrets", []) : "${mod.env_prefix}${item.name}" => item.value
+      for item in lookup(mod.outputs, "secrets", []) : "${mod.env_prefix}${item.name}" => sensitive(item.value)
     }
   ]...)
 }
