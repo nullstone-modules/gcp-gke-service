@@ -84,7 +84,7 @@ resource "kubernetes_manifest" "secrets_from_gsm" {
   count = signum(length(local.all_secret_keys))
 
   manifest = {
-    apiVersion = "external-secrets.io/v1beta1"
+    apiVersion = "external-secrets.io/v1"
     kind       = "ExternalSecret"
 
     metadata = {

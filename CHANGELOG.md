@@ -1,3 +1,6 @@
+# 0.8.1 (Oct 22, 2025)
+* Upgraded external secrets apiVersion to `external-secrets.io/v1` (was `external-secrets.io/v1beta1`).
+
 # 0.8.0 (Sep 22, 2025)
 * Upgraded terraform providers.
 
