@@ -1,3 +1,6 @@
+# 0.8.2 (Dec 01, 2025)
+* Improved aggregation of capability outputs to reduce errors and improve reliability.
+
 # 0.8.1 (Oct 22, 2025)
 * Upgraded external secrets apiVersion to `external-secrets.io/v1` (was `external-secrets.io/v1beta1`).
 
