@@ -1,4 +1,4 @@
-# 0.8.2 (Dec 01, 2025)
+# 0.8.2 (Dec 02, 2025)
 * Improved aggregation of capability outputs to reduce errors and improve reliability.
 * Upgrade `google` terraform provider.
 
