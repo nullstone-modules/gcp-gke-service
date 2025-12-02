@@ -106,10 +106,21 @@ locals {
         success_threshold     = null
         failure_threshold     = null
 
-        exec       = jsonencode({})
-        grpc       = jsonencode({})
-        http_get   = jsonencode({})
-        tcp_socket = jsonencode({})
+        exec = jsonencode({
+          command = []
+        })
+        grpc = jsonencode({
+          port    = 9000
+          service = "myservice"
+        })
+        http_get = jsonencode({
+          path   = "/"
+          port   = 80
+          scheme = "HTTP"
+        })
+        tcp_socket = jsonencode({
+          port = 80
+        })
       }
     ]
 
@@ -122,10 +133,21 @@ locals {
         success_threshold     = null
         failure_threshold     = null
 
-        exec       = jsonencode({})
-        grpc       = jsonencode({})
-        http_get   = jsonencode({})
-        tcp_socket = jsonencode({})
+        exec = jsonencode({
+          command = []
+        })
+        grpc = jsonencode({
+          port    = 9000
+          service = "myservice"
+        })
+        http_get = jsonencode({
+          path   = "/"
+          port   = 80
+          scheme = "HTTP"
+        })
+        tcp_socket = jsonencode({
+          port = 80
+        })
       }
     ]
 
@@ -138,10 +160,21 @@ locals {
         success_threshold     = null
         failure_threshold     = null
 
-        exec       = jsonencode({})
-        grpc       = jsonencode({})
-        http_get   = jsonencode({})
-        tcp_socket = jsonencode({})
+        exec = jsonencode({
+          command = []
+        })
+        grpc = jsonencode({
+          port    = 9000
+          service = "myservice"
+        })
+        http_get = jsonencode({
+          path   = "/"
+          port   = 80
+          scheme = "HTTP"
+        })
+        tcp_socket = jsonencode({
+          port = 80
+        })
       }
     ]
   }
