@@ -1,7 +1,5 @@
 locals {
-  metrics_mappings = concat(local.base_metrics, local.cap_metrics)
-
-  cap_metrics = []
+  metrics_mappings = concat(local.base_metrics, local.capabilities.metrics)
 
   // Resources
   // - https://cloud.google.com/stackdriver/docs/managed-prometheus/promql

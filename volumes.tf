@@ -1,9 +1,6 @@
 locals {
-  cap_volumes       = lookup(local.capabilities, "volumes", [])
-  cap_volume_mounts = lookup(local.capabilities, "volume_mounts", [])
-
   volume_mounts = {
-    for vm in local.cap_volume_mounts : vm.name =>
+    for vm in local.capabilities.volume_mounts : vm.name =>
     {
       name              = vm.name
       mount_path        = vm.mount_path
@@ -14,7 +11,7 @@ locals {
   }
 
   volumes = [
-    for v in local.cap_volumes : {
+    for v in local.capabilities.volumes : {
       name                    = v.name
       persistent_volume_claim = jsondecode(lookup(v, "persistent_volume_claim", "null"))
       empty_dir               = jsondecode(lookup(v, "empty_dir", "null"))

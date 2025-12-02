@@ -19,6 +19,13 @@ EOF
 }
 
 locals {
+  cap_env_vars = {
+    for item in local.capabilities.env : "${local.cap_env_prefixes[item.cap_tf_id]}${item.name}" => item.value
+  }
+  cap_secrets = {
+    for item in local.capabilities.secrets : "${local.cap_env_prefixes[item.cap_tf_id]}${item.name}" => sensitive(item.value)
+  }
+
   standard_env_vars = tomap({
     NULLSTONE_STACK         = data.ns_workspace.this.stack_name
     NULLSTONE_APP           = data.ns_workspace.this.block_name
@@ -50,7 +57,8 @@ data "ns_secret_keys" "this" {
 }
 
 locals {
-  secret_keys  = data.ns_secret_keys.this.secret_keys
-  all_secrets  = data.ns_env_variables.this.secrets
-  all_env_vars = data.ns_env_variables.this.env_variables
+  secret_keys          = data.ns_secret_keys.this.secret_keys
+  all_secrets          = data.ns_env_variables.this.secrets
+  all_env_vars         = data.ns_env_variables.this.env_variables
+  existing_secret_refs = data.ns_env_variables.this.secret_refs
 }

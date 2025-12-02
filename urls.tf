@@ -8,8 +8,8 @@ locals {
   ] : []
   additional_public_urls = []
 
-  private_urls = concat([for url in try(local.capabilities.private_urls, []) : url["url"]], local.additional_private_urls)
-  public_urls  = concat([for url in try(local.capabilities.public_urls, []) : url["url"]], local.additional_public_urls)
+  private_urls = concat([for cur in local.capabilities.private_urls : cur.url], local.additional_private_urls)
+  public_urls  = concat([for cur in local.capabilities.public_urls : cur.url], local.additional_public_urls)
 }
 
 locals {

@@ -37,9 +37,8 @@ locals {
   // secret refs are prepared as a map in the form name:"<secret-id>"
   // base => user-injected + capability secrets
   // existing => user-injected with format `secret(...)`
-  base_secret_refs     = { for key in local.base_secret_keys : key => google_secret_manager_secret.app_secret[key].secret_id }
-  existing_secret_refs = data.ns_env_variables.existing.secret_refs
-  all_secret_refs      = merge(local.base_secret_refs, local.existing_secret_refs)
+  base_secret_refs = { for key in local.base_secret_keys : key => google_secret_manager_secret.app_secret[key].secret_id }
+  all_secret_refs  = merge(local.base_secret_refs, local.existing_secret_refs)
 }
 
 // The secret store defines "how" to access google secrets manager

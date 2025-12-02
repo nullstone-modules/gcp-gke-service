@@ -1,10 +1,6 @@
 locals {
-  cap_startup_probes   = lookup(local.capabilities, "startup_probes", [])
-  cap_readiness_probes = lookup(local.capabilities, "readiness_probes", [])
-  cap_liveness_probes  = lookup(local.capabilities, "liveness_probes", [])
-
   startup_probes = [
-    for p in local.cap_startup_probes : {
+    for p in local.capabilities.startup_probes : {
       initial_delay_seconds = lookup(p, "initial_delay_seconds", null)
       period_seconds        = lookup(p, "period_seconds", null)
       timeout_seconds       = lookup(p, "timeout_seconds", null)
@@ -18,7 +14,7 @@ locals {
     }
   ]
   readiness_probes = [
-    for p in local.cap_readiness_probes : {
+    for p in local.capabilities.readiness_probes : {
       initial_delay_seconds = lookup(p, "initial_delay_seconds", null)
       period_seconds        = lookup(p, "period_seconds", null)
       timeout_seconds       = lookup(p, "timeout_seconds", null)
@@ -32,7 +28,7 @@ locals {
     }
   ]
   liveness_probes = [
-    for p in local.cap_liveness_probes : {
+    for p in local.capabilities.liveness_probes : {
       initial_delay_seconds = lookup(p, "initial_delay_seconds", null)
       period_seconds        = lookup(p, "period_seconds", null)
       timeout_seconds       = lookup(p, "timeout_seconds", null)
