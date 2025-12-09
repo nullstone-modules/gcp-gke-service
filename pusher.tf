@@ -16,6 +16,9 @@ resource "google_artifact_registry_repository_iam_member" "member" {
   member     = "serviceAccount:${google_service_account.image_pusher.email}"
 }
 
-resource "google_service_account_key" "image_pusher" {
-  service_account_id = google_service_account.image_pusher.account_id
+// Allow Nullstone Agent to impersonate the pusher account
+resource "google_service_account_iam_binding" "image_pusher_nullstone_agent" {
+  service_account_id = google_service_account.image_pusher.id
+  role               = "roles/iam.serviceAccountTokenCreator"
+  members            = ["serviceAccount:${local.ns_agent_service_account_email}"]
 }

@@ -9,7 +9,7 @@ output "image_repo_url" {
 }
 
 output "log_provider" {
-  value       = "gcp"
+  value       = "gke"
   description = "string ||| The log provider used for this service."
 }
 
@@ -21,10 +21,10 @@ output "metrics_provider" {
 output "metrics_reader" {
   value = {
     email       = try(google_service_account.deployer.email, "")
-    private_key = try(google_service_account_key.deployer.private_key, "")
+    impersonate = true
   }
 
-  description = "object({ email: string, private_key: string }) ||| A GCP service account with explicit privilege to view metrics for this application."
+  description = "object({ email: string, impersonate: bool }) ||| A GCP service account with explicit privilege to view metrics for this application."
   sensitive   = true
 }
 
@@ -46,10 +46,10 @@ output "service_namespace" {
 output "image_pusher" {
   value = {
     email       = try(google_service_account.image_pusher.email, "")
-    private_key = try(google_service_account_key.image_pusher.private_key, "")
+    impersonate = true
   }
 
-  description = "object({ email: string, private_key: string }) ||| A GCP service account that is allowed to push images."
+  description = "object({ email: string, impersonate: bool }) ||| A GCP service account that is allowed to push images."
 
   sensitive = true
 }
@@ -57,10 +57,10 @@ output "image_pusher" {
 output "deployer" {
   value = {
     email       = try(google_service_account.deployer.email, "")
-    private_key = try(google_service_account_key.deployer.private_key, "")
+    impersonate = true
   }
 
-  description = "object({ email: string, private_key: string }) ||| A GCP service account with explicit privilege to deploy this GKE service to its cluster."
+  description = "object({ email: string, impersonate: bool }) ||| A GCP service account with explicit privilege to deploy this GKE service to its cluster."
   sensitive   = true
 }
 

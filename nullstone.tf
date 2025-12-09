@@ -8,6 +8,12 @@ terraform {
 
 data "ns_workspace" "this" {}
 
+data "ns_agent" "this" {}
+
+locals {
+  ns_agent_service_account_email = data.ns_agent.this.gcp_service_account_email
+}
+
 // Generate a random suffix to ensure uniqueness of resources
 resource "random_string" "resource_suffix" {
   length  = 5
