@@ -1,3 +1,6 @@
+# 0.8.3 (Dec 17, 2025)
+* Switched to using impersonation from nullstone agent to image pusher, deployer.
+
 # 0.8.2 (Dec 02, 2025)
 * Improved aggregation of capability outputs to reduce errors and improve reliability.
 * Upgrade `google` terraform provider.
