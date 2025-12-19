@@ -1,3 +1,6 @@
+# 0.8.4 (Dec 19, 2025)
+* Added GOOGLE_CLOUD_PROJECT to env vars.
+
 # 0.8.3 (Dec 17, 2025)
 * Switched to using impersonation from nullstone agent to image pusher, deployer.
 
