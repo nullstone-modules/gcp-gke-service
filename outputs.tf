@@ -20,6 +20,7 @@ output "metrics_provider" {
 
 output "metrics_reader" {
   value = {
+    project_id  = local.project_id
     email       = try(google_service_account.deployer.email, "")
     impersonate = true
   }
@@ -45,6 +46,7 @@ output "service_namespace" {
 
 output "image_pusher" {
   value = {
+    project_id  = local.project_id
     email       = try(google_service_account.image_pusher.email, "")
     impersonate = true
   }
@@ -56,6 +58,7 @@ output "image_pusher" {
 
 output "deployer" {
   value = {
+    project_id  = local.project_id
     email       = try(google_service_account.deployer.email, "")
     impersonate = true
   }

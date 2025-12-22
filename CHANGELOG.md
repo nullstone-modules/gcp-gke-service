@@ -1,3 +1,6 @@
+# 0.8.6 (Dec 22, 2025)
+* Rebuilt secrets management to fix several issues.
+
 # 0.8.5 (Dec 19, 2025)
 * Added `GOOGLE_CLOUD_PROJECT_NUMBER` to env vars.
 

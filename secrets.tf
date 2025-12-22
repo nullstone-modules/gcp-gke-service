@@ -1,18 +1,5 @@
-// "existing" adds support for the `secret(...)` syntax
-// This only supports `secret(...)` specified by the user
-data "ns_env_variables" "existing" {
-  input_env_variables = var.env_vars
-  input_secrets       = {}
-}
-
-locals {
-  base_secret_keys     = data.ns_secret_keys.this.secret_keys
-  existing_secret_keys = keys(data.ns_env_variables.existing.secret_refs)
-  all_secret_keys      = toset(concat(tolist(local.base_secret_keys), local.existing_secret_keys))
-}
-
 resource "google_secret_manager_secret" "app_secret" {
-  for_each = local.base_secret_keys
+  for_each = local.managed_secret_keys
 
   // Valid secret_id: [[a-zA-Z_0-9]+]
   secret_id = lower(replace("${local.resource_name}_${each.value}", "/[^a-zA-Z_0-9]/", "_"))
@@ -24,21 +11,15 @@ resource "google_secret_manager_secret" "app_secret" {
 }
 
 resource "google_secret_manager_secret_version" "app_secret" {
-  for_each = local.base_secret_keys
+  for_each = local.managed_secret_keys
 
   secret      = google_secret_manager_secret.app_secret[each.value].id
-  secret_data = local.all_secrets[each.value]
+  secret_data = local.managed_secrets[each.value]
 }
 
 locals {
   // Valid metadata name: [a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*
   app_secret_store_name = "${local.resource_name}-gsm-secrets"
-
-  // secret refs are prepared as a map in the form name:"<secret-id>"
-  // base => user-injected + capability secrets
-  // existing => user-injected with format `secret(...)`
-  base_secret_refs = { for key in local.base_secret_keys : key => google_secret_manager_secret.app_secret[key].secret_id }
-  all_secret_refs  = merge(local.base_secret_refs, local.existing_secret_refs)
 }
 
 // The secret store defines "how" to access google secrets manager
@@ -100,7 +81,7 @@ resource "kubernetes_manifest" "secrets_from_gsm" {
       target = {
         name = local.app_secret_store_name
       }
-      data = [for key, value in local.all_secret_refs : {
+      data = [for key, value in local.all_secrets : {
         secretKey = key
         remoteRef = {
           key = value
