@@ -1,3 +1,6 @@
+# 0.8.8 (Dec 22, 2025)
+* Fixed secrets access reference.
+
 # 0.8.7 (Dec 22, 2025)
 * Fixed references to add secrets access to app service account.
 
