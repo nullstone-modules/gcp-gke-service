@@ -35,7 +35,7 @@ resource "google_service_account_iam_member" "app_generate_token" {
 resource "google_secret_manager_secret_iam_member" "k8s_access" {
   for_each = local.all_secret_keys
 
-  secret_id = local.all_secret_refs[each.key]
+  secret_id = local.all_secrets[each.key]
   project   = local.project_id
   role      = "roles/secretmanager.secretAccessor"
   member    = "serviceAccount:${google_service_account.app.email}"

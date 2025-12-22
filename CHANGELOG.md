@@ -1,3 +1,6 @@
+# 0.8.7 (Dec 22, 2025)
+* Fixed references to add secrets access to app service account.
+
 # 0.8.6 (Dec 22, 2025)
 * Rebuilt secrets management to fix several issues.
 
