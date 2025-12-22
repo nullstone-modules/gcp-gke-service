@@ -1,3 +1,6 @@
+# 0.8.9 (Dec 22, 2025)
+* Removed `sensitive` from `deployer`, `image_pusher`, and `metrics_reader` since it no longer contains a keyfile.
+
 # 0.8.8 (Dec 22, 2025)
 * Fixed secrets access reference.
 
