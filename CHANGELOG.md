@@ -1,3 +1,6 @@
+# 0.8.12 (Dec 23, 2025)
+* Added `GOOGLE_SERVICE_ACCOUNT_EMAIL` to the built-in env vars.
+
 # 0.8.11 (Dec 23, 2025)
 * Enable `roles/iam.serviceAccountTokenCreator` on the app's service account to itself.
 

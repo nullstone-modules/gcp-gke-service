@@ -51,8 +51,9 @@ locals {
     NULLSTONE_PRIVATE_HOSTS = join(",", local.private_hosts)
   })
   google_env_vars = tomap({
-    GOOGLE_CLOUD_PROJECT        = local.project_id
-    GOOGLE_CLOUD_PROJECT_NUMBER = local.project_number
+    GOOGLE_CLOUD_PROJECT         = local.project_id
+    GOOGLE_CLOUD_PROJECT_NUMBER  = local.project_number
+    GOOGLE_SERVICE_ACCOUNT_EMAIL = google_service_account.app.email
   })
 
   input_env_vars    = merge(local.standard_env_vars, local.google_env_vars, local.cap_env_vars, var.env_vars)
