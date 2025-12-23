@@ -20,15 +20,22 @@ resource "kubernetes_service_account_v1" "app" {
 
 // This allows the kubernetes service account <app-namespace>/<app-name> to impersonate a workload identity
 resource "google_service_account_iam_member" "app_workload_identity" {
-  service_account_id = google_service_account.app.name
+  service_account_id = google_service_account.app.id
   role               = "roles/iam.workloadIdentityUser"
   member             = "serviceAccount:${local.project_id}.svc.id.goog[${local.app_namespace}/${local.app_name}]"
 }
-
 resource "google_service_account_iam_member" "app_generate_token" {
-  service_account_id = google_service_account.app.name
+  service_account_id = google_service_account.app.id
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${local.project_id}.svc.id.goog[${local.app_namespace}/${local.app_name}]"
+}
+
+// This allows the app's GCP service account to create an oauth token for itself
+// This is generally useful, but this enables a situation where code wants to generate GCS bucket object signed URLs
+resource "google_service_account_iam_member" "app_generate_token_self" {
+  service_account_id = google_service_account.app.id
+  role               = "roles/iam.serviceAccountTokenCreator"
+  member             = "serviceAccount:${google_service_account.app.email}"
 }
 
 // See https://cloud.google.com/kubernetes-engine/docs/tutorials/workload-identity-secrets

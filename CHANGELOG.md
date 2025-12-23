@@ -1,3 +1,6 @@
+# 0.8.11 (Dec 23, 2025)
+* Enable `roles/iam.serviceAccountTokenCreator` on the app's service account to itself.
+
 # 0.8.10 (Dec 23, 2025)
 * Fixed usage of `{{ secret() }}` when granting access to secrets.
 
