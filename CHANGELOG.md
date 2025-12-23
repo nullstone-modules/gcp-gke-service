@@ -1,3 +1,6 @@
+# 0.8.10 (Dec 23, 2025)
+* Fixed usage of `{{ secret() }}` when granting access to secrets.
+
 # 0.8.9 (Dec 22, 2025)
 * Removed `sensitive` from `deployer`, `image_pusher`, and `metrics_reader` since it no longer contains a keyfile.
 

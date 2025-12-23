@@ -85,7 +85,7 @@ locals {
   // unmanaged_secret_keys are secrets that are not managed by this module
   // This is a list of string for all references where a user specified {{ secret(...) }}
   // The value of each item is the "..." inside secret()
-  unmanaged_secret_keys = toset([for key in data.ns_env_variables.existing.secret_refs : key])
+  unmanaged_secret_keys = toset([for key, value in data.ns_env_variables.existing.secret_refs : key])
   // managed_secret_keys is a list of keys for secrets that this module manages
   // This excludes references to existing secrets {{ secret(...) }}
   managed_secret_keys = setsubtract(data.ns_secret_keys.this.secret_keys, local.unmanaged_secret_keys)
