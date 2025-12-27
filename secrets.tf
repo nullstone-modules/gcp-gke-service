@@ -14,7 +14,7 @@ resource "google_secret_manager_secret_version" "app_secret" {
   for_each = local.managed_secret_keys
 
   secret      = google_secret_manager_secret.app_secret[each.value].id
-  secret_data = local.managed_secrets[each.value]
+  secret_data = local.managed_secret_values[each.value]
 }
 
 locals {

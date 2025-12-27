@@ -96,5 +96,7 @@ locals {
   unmanaged_secrets = data.ns_env_variables.existing.secret_refs
   // managed_secrets is a map of name => secret_ref
   managed_secrets = { for key in local.managed_secret_keys : key => google_secret_manager_secret.app_secret[key].secret_id }
-  all_secrets     = merge(local.unmanaged_secrets, local.managed_secrets)
+  // managed_secret_values is a map of name => value
+  managed_secret_values = data.ns_env_variables.this.secrets
+  all_secrets           = merge(local.unmanaged_secrets, local.managed_secrets)
 }
