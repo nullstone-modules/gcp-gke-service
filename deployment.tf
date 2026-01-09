@@ -27,6 +27,10 @@ resource "kubernetes_deployment_v1" "this" {
     template {
       metadata {
         labels = local.app_labels
+
+        annotations = {
+          "nullstone.io/secrets-checksum" = local.secrets_checksum
+        }
       }
 
       spec {

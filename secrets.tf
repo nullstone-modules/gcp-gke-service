@@ -90,3 +90,23 @@ resource "kubernetes_manifest" "secrets_from_gsm" {
     }
   }
 }
+
+// The following is used to cause app redeployments when secrets change
+// We do this by annotating the deployment spec with a checksum of `map { secret_key => secret_version }`
+// This works because any time a secret value changes, the "latest" version changes
+locals {
+  managed_secrets_versions = {
+    for key in local.managed_secret_keys : key => google_secret_manager_secret_version.app_secret[key].version
+  }
+  unmanaged_secrets_versions = {
+    for key in local.unmanaged_secret_keys : key => data.google_secret_manager_secret_version.unmanaged[key].version
+  }
+  secrets_checksum = sha256(jsonencode(merge(local.unmanaged_secrets_versions, local.managed_secrets_versions)))
+}
+
+data "google_secret_manager_secret_version" "unmanaged" {
+  for_each = local.unmanaged_secret_keys
+
+  secret            = each.value
+  fetch_secret_data = false
+}
