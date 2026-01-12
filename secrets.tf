@@ -105,7 +105,7 @@ locals {
 }
 
 data "google_secret_manager_secret_version" "unmanaged" {
-  for_each = local.unmanaged_secret_keys
+  for_each = local.unmanaged_secrets
 
   secret            = each.value
   fetch_secret_data = false

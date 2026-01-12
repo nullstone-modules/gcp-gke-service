@@ -1,3 +1,6 @@
+# 0.8.15 (Jan 12, 2026)
+* Fixed version retrieval for `{{ secret(...) }}`.
+
 # 0.8.14 (Jan 09, 2026)
 * Updated app to force a redeployment when any secret value changes.
 
