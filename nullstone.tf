@@ -34,6 +34,20 @@ locals {
     "nullstone.io/block-ref" = data.ns_workspace.this.block_ref
     "nullstone.io/env"       = data.ns_workspace.this.env_name
   }
+
+  k8s_component_labels = {
+    "nullstone.io/stack"     = data.ns_workspace.this.stack_name
+    "nullstone.io/block-ref" = data.ns_workspace.this.block_ref
+    "nullstone.io/block"     = data.ns_workspace.this.block_name
+    "nullstone.io/env"       = data.ns_workspace.this.env_name
+
+    "app.kubernetes.io/name"       = local.block_name
+    "app.kubernetes.io/version"    = ""
+    "app.kubernetes.io/component"  = ""
+    "app.kubernetes.io/part-of"    = data.ns_workspace.this.stack_name
+    "app.kubernetes.io/managed-by" = "nullstone"
+  }
+
   labels = merge({
     // k8s-recommended labels
     "app.kubernetes.io/name"       = local.block_name

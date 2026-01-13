@@ -1,3 +1,6 @@
+# 0.8.16 (Jan 13, 2026)
+* Removed `app.kubernetes.io/version` from k8s component labels.
+
 # 0.8.15 (Jan 12, 2026)
 * Fixed version retrieval for `{{ secret(...) }}`.
 

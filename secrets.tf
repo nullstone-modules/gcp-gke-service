@@ -32,7 +32,7 @@ resource "kubernetes_manifest" "gsm_secret_store" {
     metadata = {
       namespace = local.app_namespace
       name      = local.app_secret_store_name
-      labels    = local.labels
+      labels    = local.k8s_component_labels
     }
 
     spec = {
@@ -70,7 +70,7 @@ resource "kubernetes_manifest" "secrets_from_gsm" {
     metadata = {
       namespace = local.app_namespace
       name      = local.app_secret_store_name
-      labels    = local.labels
+      labels    = local.k8s_component_labels
     }
 
     spec = {
