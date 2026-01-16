@@ -1,3 +1,6 @@
+# 0.8.17 (Jan 16, 2026)
+* Fixed format of `http_get.http_headers` for probes created by capabilities.
+
 # 0.8.16 (Jan 13, 2026)
 * Removed `app.kubernetes.io/version` from k8s component labels.
 
