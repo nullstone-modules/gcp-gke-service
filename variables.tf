@@ -55,3 +55,17 @@ Other services on the network can reach this app via `<app_name>:<service_port>`
 Specify 0 to disable network connectivity to this app.
 EOF
 }
+
+variable "image_url" {
+  type    = string
+  default = ""
+
+  description = <<EOF
+This allows you to override the image used for the application.
+This removes management of build artifacts through Nullstone, but allows you to use pre-built artifacts managed externally.
+
+If blank, Nullstone will create an image repository and provide management of images.
+
+If you configure image_url, you can still use `nullstone deploy --version=<...>` to deploy a specific image tag.
+EOF
+}

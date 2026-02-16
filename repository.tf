@@ -1,4 +1,6 @@
 resource "google_artifact_registry_repository" "this" {
+  count = var.image_url == "" ? 1 : 0
+
   location      = local.region
   repository_id = local.resource_name
   format        = "DOCKER"
@@ -11,5 +13,5 @@ resource "google_artifact_registry_repository" "this" {
 }
 
 locals {
-  repository_url = "${google_artifact_registry_repository.this.location}-docker.pkg.dev/${google_artifact_registry_repository.this.project}/${google_artifact_registry_repository.this.name}/${local.app_name}"
+  repository_url = var.image_url == "" ? "${google_artifact_registry_repository.this[0].location}-docker.pkg.dev/${google_artifact_registry_repository.this[0].project}/${google_artifact_registry_repository.this[0].name}/${local.app_name}" : var.image_url
 }

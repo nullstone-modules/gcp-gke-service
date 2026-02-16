@@ -1,3 +1,6 @@
+# 0.8.18 (Feb 16, 2026)
+* Added `var.image_url` to enable externally-managed images.
+
 # 0.8.17 (Jan 16, 2026)
 * Fixed format of `http_get.http_headers` for probes created by capabilities.
 
