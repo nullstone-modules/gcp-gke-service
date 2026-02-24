@@ -177,5 +177,21 @@ locals {
         })
       }
     ]
+
+    deployment_annotations = [
+      {
+        cap_tf_id = "x"
+        name      = ""
+        value     = ""
+      }
+    ]
+
+    service_annotations = [
+      {
+        cap_tf_id = "x"
+        name      = ""
+        value     = ""
+      }
+    ]
   }
 }

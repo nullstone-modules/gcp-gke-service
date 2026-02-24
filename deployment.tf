@@ -1,6 +1,10 @@
 locals {
   main_container_name = "main"
   command             = length(var.command) > 0 ? var.command : null
+
+  base_deployment_annotations = tomap({})
+  cap_deployment_annotations  = tomap({ for ann in local.capabilities.deployment_annotations : ann.name => ann.value })
+  deployment_annotations      = merge(local.base_deployment_annotations, local.cap_deployment_annotations)
 }
 
 resource "kubernetes_deployment_v1" "this" {
@@ -11,9 +15,10 @@ resource "kubernetes_deployment_v1" "this" {
   depends_on = [kubernetes_manifest.secrets_from_gsm]
 
   metadata {
-    name      = local.app_name
-    namespace = local.app_namespace
-    labels    = local.app_labels
+    name        = local.app_name
+    namespace   = local.app_namespace
+    labels      = local.app_labels
+    annotations = local.deployment_annotations
   }
 
   # Pods specs

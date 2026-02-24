@@ -1,3 +1,6 @@
+# 0.8.19 (Feb 24, 2026)
+* Added ability to specify `deployment_annotations` and `service_annotations` from capabilities.
+
 # 0.8.18 (Feb 16, 2026)
 * Added `var.image_url` to enable externally-managed images.
 

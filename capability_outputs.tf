@@ -12,5 +12,7 @@ locals {
     "startup_probes",
     "readiness_probes",
     "liveness_probes",
+    "deployment_annotations",
+    "service_annotations",
   ]
 }
