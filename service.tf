@@ -13,7 +13,10 @@ resource "kubernetes_service_v1" "this" {
   count = local.has_service ? 1 : 0
 
   lifecycle {
-    ignore_changes = [metadata[0].annotations["cloud.google.com/neg"]]
+    ignore_changes = [
+      metadata[0].annotations["cloud.google.com/neg"],
+      metadata[0].annotations["cloud.google.com/neg-status"],
+    ]
   }
 
   metadata {

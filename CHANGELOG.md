@@ -1,3 +1,6 @@
+# 0.8.20 (Feb 25, 2026)
+* Ignore diffs to "cloud.google.com/neg-status" service annotation since it's managed by GKE. 
+
 # 0.8.19 (Feb 24, 2026)
 * Added ability to specify `deployment_annotations` and `service_annotations` from capabilities.
 
