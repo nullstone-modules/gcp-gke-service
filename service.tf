@@ -37,3 +37,47 @@ resource "kubernetes_service_v1" "this" {
     }
   }
 }
+
+resource "kubernetes_manifest" "backend_policy" {
+  count = local.has_service ? 1 : 0
+
+  manifest = {
+    apiVersion = "networking.gke.io/v1"
+    kind       = "GCPBackendPolicy"
+
+    metadata = {
+      name      = local.service_name
+      namespace = local.app_namespace
+      labels    = local.app_labels
+    }
+
+    spec = {
+      targetRef = {
+        group = ""
+        kind  = "Service"
+        name  = local.service_name
+      }
+
+      default = merge(
+        {
+          timeoutSec = var.backend_policy.timeout_sec
+          logging = {
+            enabled    = var.backend_policy.logging.enabled
+            sampleRate = var.backend_policy.logging.sample_rate
+          }
+        },
+        var.backend_policy.connection_draining != null ? {
+          connectionDraining = {
+            drainingTimeoutSec = var.backend_policy.connection_draining.timeout_sec
+          }
+        } : {},
+        var.backend_policy.session_affinity != null ? {
+          sessionAffinity = {
+            type         = var.backend_policy.session_affinity.type
+            cookieTtlSec = var.backend_policy.session_affinity.cookie_ttl_sec
+          }
+        } : {},
+      )
+    }
+  }
+}

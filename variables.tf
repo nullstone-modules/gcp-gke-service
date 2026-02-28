@@ -56,6 +56,25 @@ Specify 0 to disable network connectivity to this app.
 EOF
 }
 
+variable "backend_policy" {
+  type = object({
+    timeout_sec = optional(number, 30)
+    connection_draining = optional(object({
+      timeout_sec = optional(number, 0)
+    }))
+    session_affinity = optional(object({
+      type           = optional(string, "NONE")
+      cookie_ttl_sec = optional(number, 0)
+    }))
+    logging = optional(object({
+      enabled     = optional(bool, true)
+      sample_rate = optional(number, 1000000)
+    }), { enabled = true })
+  })
+  default     = {}
+  description = "GCP backend policy configuration for the load balancer. Controls timeout, connection draining, session affinity, and access logging."
+}
+
 variable "image_url" {
   type    = string
   default = ""
