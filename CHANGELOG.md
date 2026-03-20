@@ -1,3 +1,6 @@
+# 0.8.21 (Mar 20, 2026)
+* Added `var.backend_policy` to allow configuration of `Service`. ([#19](https://github.com/nullstone-modules/gcp-gke-service/pull/19))
+
 # 0.8.20 (Feb 25, 2026)
 * Ignore diffs to "cloud.google.com/neg-status" service annotation since it's managed by GKE. 
 
