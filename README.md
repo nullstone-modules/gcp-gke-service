@@ -40,6 +40,17 @@ Additionally, a `Load Balancer` allows you to split traffic between more than 1 
 Logs are automatically emitted to AWS Cloudwatch Log Group: `/<task-name>`.
 To access through the Nullstone CLI, use `nullstone logs` CLI command. (See [`logs`](https://docs.nullstone.io/getting-started/cli/docs.html#logs) for more information)
 
+## Backend Policy
+
+This module creates a `GCPBackendPolicy` for the Service. The `backend_policy` variable controls:
+
+- **Timeout** – Backend request timeout in seconds (default: 30s).
+- **Connection draining** – Graceful draining timeout for removed backends.
+- **Session affinity** – Sticky sessions by type (`NONE`, `CLIENT_IP`, `GENERATED_COOKIE`, etc.) with optional cookie TTL.
+- **Access logging** – Whether to log requests and at what sample rate (enabled by default to preserve GKE defaults).
+
+See [Configure Gateway resources using Policies](https://docs.cloud.google.com/kubernetes-engine/docs/how-to/configure-gateway-resources) for full details.
+
 ## Secrets
 
 Nullstone automatically injects secrets into your GKE Service through environment variables.
