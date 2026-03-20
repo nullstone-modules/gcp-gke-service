@@ -1,3 +1,7 @@
+# 0.8.22 (Mar 20, 2026)
+* Added OpenTelemetry env vars if cluster is managing OpenTelemetry collector.
+* Added `service.commit.sha` to `OTEL_RESOURCE_ATTRIBUTES`.
+
 # 0.8.21 (Mar 20, 2026)
 * Added `var.backend_policy` to allow configuration of `Service`. ([#19](https://github.com/nullstone-modules/gcp-gke-service/pull/19))
 

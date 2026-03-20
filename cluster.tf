@@ -18,3 +18,14 @@ provider "kubernetes" {
   token                  = data.google_client_config.provider.access_token
   cluster_ca_certificate = base64decode(local.cluster_ca_certificate)
 }
+
+data "ns_connection" "cluster" {
+  name     = "cluster"
+  contract = "cluster/gcp/k8s:gke"
+  via      = data.ns_connection.cluster_namespace.name
+}
+
+locals {
+  otel_collector_endpoint = try(data.ns_connection.cluster.outputs.otel_collector_endpoint, "")
+  otel_collector_protocol = try(data.ns_connection.cluster.outputs.otel_collector_protocol, "")
+}

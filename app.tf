@@ -5,9 +5,10 @@ data "ns_app_env" "this" {
 }
 
 locals {
-  app_namespace = local.kubernetes_namespace
-  app_name      = data.ns_workspace.this.block_name
-  app_version   = coalesce(data.ns_app_env.this.version, "latest")
+  app_namespace  = local.kubernetes_namespace
+  app_name       = data.ns_workspace.this.block_name
+  app_version    = coalesce(data.ns_app_env.this.version, "latest")
+  app_commit_sha = data.ns_app_env.this.commit_sha
 }
 
 locals {

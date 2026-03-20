@@ -55,8 +55,19 @@ locals {
     GOOGLE_CLOUD_PROJECT_NUMBER  = local.project_number
     GOOGLE_SERVICE_ACCOUNT_EMAIL = google_service_account.app.email
   })
+  otel_env_vars = local.otel_collector_endpoint == "" ? tomap({}) : tomap({
+    OTEL_EXPORTER_OTLP_ENDPOINT = local.otel_collector_endpoint
+    OTEL_EXPORTER_OTLP_PROTOCOL = local.otel_collector_protocol
+    OTEL_SERVICE_NAME           = local.app_name
+    OTEL_RESOURCE_ATTRIBUTES = join(",", [
+      "service.namespace=${local.stack_name}",
+      "deployment.environment=${local.env_name}",
+      "service.version=${local.app_version}",
+      "service.commit.sha=${local.app_commit_sha}",
+    ])
+  })
 
-  input_env_vars    = merge(local.standard_env_vars, local.google_env_vars, local.cap_env_vars, var.env_vars)
+  input_env_vars    = merge(local.standard_env_vars, local.google_env_vars, local.otel_env_vars, local.cap_env_vars, var.env_vars)
   input_secrets     = merge(local.cap_secrets, var.secrets)
   input_secret_keys = nonsensitive(concat(keys(local.cap_secrets), keys(var.secrets)))
 }
