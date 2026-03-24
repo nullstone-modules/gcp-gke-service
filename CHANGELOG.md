@@ -1,3 +1,6 @@
+# 0.8.23 (Mar 24, 2026)
+* Added `service_account_email` output.
+
 # 0.8.22 (Mar 20, 2026)
 * Added OpenTelemetry env vars if cluster is managing OpenTelemetry collector.
 * Added `service.commit.sha` to `OTEL_RESOURCE_ATTRIBUTES`.

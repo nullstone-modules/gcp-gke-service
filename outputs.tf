@@ -43,6 +43,11 @@ output "service_namespace" {
   description = "string ||| The kubernetes namespace where the app resides."
 }
 
+output "service_account_email" {
+  value       = google_service_account.app.email
+  description = "string ||| Email of the GCP service account attached to this app"
+}
+
 output "image_pusher" {
   value = {
     project_id  = local.project_id
