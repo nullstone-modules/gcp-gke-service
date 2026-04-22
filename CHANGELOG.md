@@ -1,3 +1,6 @@
+# 0.9.0 (Apr 22, 2026)
+* Migrated to OpenTofu.
+
 # 0.8.23 (Mar 24, 2026)
 * Added `service_account_email` output.
 
