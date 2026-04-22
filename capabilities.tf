@@ -83,6 +83,18 @@ locals {
           claim_name = ""    // Required
           read_only  = false // Optional
         })
+        secret = jsonencode({
+          secret_name  = ""   // Required - name of the k8s Secret to project
+          default_mode = null // Optional - octal string (e.g. "0400")
+          optional     = null // Optional
+          items = [           // Optional - per-key filename/mode overrides
+            {
+              key  = ""
+              path = ""
+              mode = null
+            }
+          ]
+        })
       }
     ]
 

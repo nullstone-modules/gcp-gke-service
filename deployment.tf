@@ -72,6 +72,28 @@ resource "kubernetes_deployment_v1" "this" {
                 path = hp.value.path
               }
             }
+
+            dynamic "secret" {
+              for_each = volume.value.secret == null ? [] : [volume.value.secret]
+              iterator = sec
+
+              content {
+                secret_name  = sec.value.secret_name
+                default_mode = lookup(sec.value, "default_mode", null)
+                optional     = lookup(sec.value, "optional", null)
+
+                dynamic "items" {
+                  for_each = lookup(sec.value, "items", null) == null ? [] : sec.value.items
+                  iterator = item
+
+                  content {
+                    key  = item.value.key
+                    path = item.value.path
+                    mode = lookup(item.value, "mode", null)
+                  }
+                }
+              }
+            }
           }
         }
 
