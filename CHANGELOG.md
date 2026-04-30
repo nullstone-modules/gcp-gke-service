@@ -1,3 +1,6 @@
+# 0.9.4 (Apr 30, 2026)
+* Added default labels (stack, block, env) to all GCP resources.
+
 # 0.9.3 (Apr 30, 2026) 
 * Dropped `nullstone.io/verson` label from supporting infra components.
 

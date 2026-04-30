@@ -1,3 +1,11 @@
+provider "google" {
+  default_labels = {
+    stack = local.stack_name
+    block = local.block_name
+    env   = local.env_name
+  }
+}
+
 data "google_client_config" "this" {}
 data "google_project" "this" {}
 
