@@ -1,3 +1,6 @@
+# 0.9.2 (Apr 30, 2026)
+* Migrated core IAM to app scaffold submodule.
+
 # 0.9.1 (Apr 22, 2026)
 * Added support for secret volumes.
 

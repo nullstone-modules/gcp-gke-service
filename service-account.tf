@@ -1,8 +1,3 @@
-resource "google_service_account" "app" {
-  account_id   = local.resource_name
-  display_name = "Service Account for Nullstone App ${local.app_name}"
-}
-
 resource "kubernetes_service_account_v1" "app" {
   metadata {
     namespace = local.app_namespace
@@ -11,31 +6,11 @@ resource "kubernetes_service_account_v1" "app" {
 
     annotations = {
       // This indicates which GCP service account this kubernetes service account can impersonate
-      "iam.gke.io/gcp-service-account" = google_service_account.app.email
+      "iam.gke.io/gcp-service-account" = module.scaffold.app_service_account.email
     }
   }
 
   automount_service_account_token = true
-}
-
-// This allows the kubernetes service account <app-namespace>/<app-name> to impersonate a workload identity
-resource "google_service_account_iam_member" "app_workload_identity" {
-  service_account_id = google_service_account.app.id
-  role               = "roles/iam.workloadIdentityUser"
-  member             = "serviceAccount:${local.project_id}.svc.id.goog[${local.app_namespace}/${local.app_name}]"
-}
-resource "google_service_account_iam_member" "app_generate_token" {
-  service_account_id = google_service_account.app.id
-  role               = "roles/iam.serviceAccountTokenCreator"
-  member             = "serviceAccount:${local.project_id}.svc.id.goog[${local.app_namespace}/${local.app_name}]"
-}
-
-// This allows the app's GCP service account to create an oauth token for itself
-// This is generally useful, but this enables a situation where code wants to generate GCS bucket object signed URLs
-resource "google_service_account_iam_member" "app_generate_token_self" {
-  service_account_id = google_service_account.app.id
-  role               = "roles/iam.serviceAccountTokenCreator"
-  member             = "serviceAccount:${google_service_account.app.email}"
 }
 
 // See https://cloud.google.com/kubernetes-engine/docs/tutorials/workload-identity-secrets
@@ -45,5 +20,5 @@ resource "google_secret_manager_secret_iam_member" "k8s_access" {
   secret_id = local.all_secrets[each.value]
   project   = local.project_id
   role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${google_service_account.app.email}"
+  member    = "serviceAccount:${module.scaffold.app_service_account.email}"
 }

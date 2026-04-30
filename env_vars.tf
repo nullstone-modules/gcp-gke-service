@@ -53,7 +53,7 @@ locals {
   google_env_vars = tomap({
     GOOGLE_CLOUD_PROJECT         = local.project_id
     GOOGLE_CLOUD_PROJECT_NUMBER  = local.project_number
-    GOOGLE_SERVICE_ACCOUNT_EMAIL = google_service_account.app.email
+    GOOGLE_SERVICE_ACCOUNT_EMAIL = module.scaffold.app_service_account.email
   })
   otel_env_vars = local.otel_collector_endpoint == "" ? tomap({}) : tomap({
     OTEL_EXPORTER_OTLP_ENDPOINT = local.otel_collector_endpoint
