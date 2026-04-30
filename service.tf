@@ -22,7 +22,7 @@ resource "kubernetes_service_v1" "this" {
   metadata {
     name        = local.service_name
     namespace   = local.app_namespace
-    labels      = local.app_labels
+    labels      = local.k8s_component_labels
     annotations = local.service_annotations
   }
 
@@ -48,7 +48,7 @@ resource "kubernetes_manifest" "backend_policy" {
     metadata = {
       name      = local.service_name
       namespace = local.app_namespace
-      labels    = local.app_labels
+      labels    = local.k8s_component_labels
     }
 
     spec = {

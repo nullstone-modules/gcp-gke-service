@@ -40,6 +40,7 @@ locals {
   k8s_component_labels = {
     "nullstone.io/stack"     = data.ns_workspace.this.stack_name
     "nullstone.io/block-ref" = data.ns_workspace.this.block_ref
+    "nullstone.io/app"       = data.ns_workspace.this.block_name
     "nullstone.io/block"     = data.ns_workspace.this.block_name
     "nullstone.io/env"       = data.ns_workspace.this.env_name
 

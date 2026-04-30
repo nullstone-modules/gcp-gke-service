@@ -1,3 +1,6 @@
+# 0.9.3 (Apr 30, 2026) 
+* Dropped `nullstone.io/verson` label from supporting infra components.
+
 # 0.9.2 (Apr 30, 2026)
 * Migrated core IAM to app scaffold submodule.
 
