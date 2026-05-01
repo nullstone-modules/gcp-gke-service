@@ -1,3 +1,6 @@
+# 0.9.6 (May 01, 2026)
+* Ensured consistent ordering of `OTEL_RESOURCE_ATTRIBUTES` env var to reduce diffs.
+
 # 0.9.5 (May 01, 2026)
 * Upgraded nullstone provider.
 

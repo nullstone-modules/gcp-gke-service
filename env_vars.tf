@@ -60,10 +60,10 @@ locals {
     OTEL_EXPORTER_OTLP_PROTOCOL = local.otel_collector_protocol
     OTEL_SERVICE_NAME           = local.app_name
     OTEL_RESOURCE_ATTRIBUTES = join(",", [
-      "service.namespace=${local.stack_name}",
       "deployment.environment=${local.env_name}",
-      "service.version=${local.app_version}",
       "service.commit.sha=${local.app_commit_sha}",
+      "service.namespace=${local.stack_name}",
+      "service.version=${local.app_version}",
     ])
   })
 
