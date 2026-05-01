@@ -1,3 +1,6 @@
+# 0.9.5 (May 01, 2026)
+* Upgraded nullstone provider.
+
 # 0.9.4 (Apr 30, 2026)
 * Added default labels (stack, block, env) to all GCP resources.
 
