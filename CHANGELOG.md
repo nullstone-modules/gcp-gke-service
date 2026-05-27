@@ -1,3 +1,7 @@
+# 0.10.0 (May 27, 2026)
+* Added `var.rolling_update_strategy` (default `max_surge = "1"`, `max_unavailable = "0"`; set `null` for the Kubernetes default).
+* Configured `preStop` and `terminationGracePeriodSeconds` from an attached Load Balancer's `deployment_overrides` output for zero-downtime rollouts.
+
 # 0.9.6 (May 01, 2026)
 * Ensured consistent ordering of `OTEL_RESOURCE_ATTRIBUTES` env var to reduce diffs.
 

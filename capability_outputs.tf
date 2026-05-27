@@ -14,5 +14,6 @@ locals {
     "liveness_probes",
     "deployment_annotations",
     "service_annotations",
+    "deployment_overrides",
   ]
 }

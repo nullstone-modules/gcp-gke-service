@@ -205,5 +205,16 @@ locals {
         value     = ""
       }
     ]
+
+    // deployment_overrides lets a capability (e.g. a load balancer) coordinate pod
+    // termination with backend deprogramming for zero-downtime rollouts.
+    // The app reads the first entry; null fields fall back to Kubernetes defaults.
+    deployment_overrides = [
+      {
+        cap_tf_id                        = "x"
+        pre_stop_seconds                 = null
+        termination_grace_period_seconds = null
+      }
+    ]
   }
 }

@@ -75,6 +75,22 @@ variable "backend_policy" {
   description = "GCP backend policy configuration for the load balancer. Controls timeout, connection draining, session affinity, and access logging."
 }
 
+variable "rolling_update_strategy" {
+  type = object({
+    max_surge       = optional(string)
+    max_unavailable = optional(string)
+  })
+  default = {
+    max_surge       = "1"
+    max_unavailable = "0"
+  }
+  description = <<EOF
+The rolling update strategy for the Deployment.
+The defaults (`max_surge = "1"`, `max_unavailable = "0"`) guarantee no reduction in serving capacity during a rollout, which (together with an attached Load Balancer's termination coordination) enables zero-downtime deploys.
+Set to `null` to omit the strategy and use the Kubernetes default (25% surge / 25% unavailable).
+EOF
+}
+
 variable "image_url" {
   type    = string
   default = ""

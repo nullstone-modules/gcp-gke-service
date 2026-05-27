@@ -35,6 +35,35 @@ To enable public access to the service, add an `Ingress` capability.
 In most cases, a `Load Balancer` capability is the best choice for exposing as it enables rollout deployments with no downtime.
 Additionally, a `Load Balancer` allows you to split traffic between more than 1 task based on load.
 
+## Zero-downtime rollouts
+
+The Deployment uses a rolling update strategy of `maxSurge: 1`, `maxUnavailable: 0` by default (via `var.rolling_update_strategy`) so capacity is never reduced mid-rollout. Set `var.rolling_update_strategy = null` to fall back to the Kubernetes default (25% surge / 25% unavailable):
+
+```hcl
+rolling_update_strategy = {
+  max_surge       = "1"
+  max_unavailable = "0"
+}
+```
+
+When a `Load Balancer` capability is attached, the Deployment additionally configures pod termination to avoid the brief downtime that container-native (NEG) load balancing can cause during rollouts (`connection termination` / `no healthy upstream`). The load balancer module supplies a `deployment_overrides` bundle that sets:
+
+- A container `preStop` sleep that holds the listener open while the load balancer deprograms the terminating endpoint.
+- `terminationGracePeriodSeconds`, sized to cover the `preStop` sleep plus an application drain buffer.
+
+With no Load Balancer attached — or when the load balancer disables coordination — pod termination uses Kubernetes defaults.
+
+### Handling SIGTERM in your application
+
+The `preStop` sleep and grace period only create the window for a graceful shutdown — your application must still stop accepting new work and finish in-flight requests when it receives `SIGTERM`. Examples:
+
+- **Go** – `signal.NotifyContext(ctx, syscall.SIGTERM)`, then `server.Shutdown(ctx)`.
+- **Node.js (Express)** – `process.on('SIGTERM', () => server.close(...))`.
+- **Python (Gunicorn/Uvicorn)** – both perform a graceful worker shutdown on `SIGTERM` by default; ensure your handlers return promptly.
+- **Java (Spring Boot)** – enable `server.shutdown=graceful` and set `spring.lifecycle.timeout-per-shutdown-phase`.
+
+For long-lived connections (websockets, SSE), raise the load balancer's `app_drain_seconds` so the grace period covers your longest acceptable drain.
+
 ## Logs
 
 Logs are automatically emitted to AWS Cloudwatch Log Group: `/<task-name>`.

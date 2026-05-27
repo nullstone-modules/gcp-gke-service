@@ -5,6 +5,20 @@ locals {
   base_deployment_annotations = tomap({})
   cap_deployment_annotations  = tomap({ for ann in local.capabilities.deployment_annotations : ann.name => ann.value })
   deployment_annotations      = merge(local.base_deployment_annotations, local.cap_deployment_annotations)
+
+  # Termination coordination (preStop, grace period) supplied by an attached load
+  # balancer capability via the standard capability output aggregation. Read the
+  # first entry; when no capability supplies it the list is empty and we fall back
+  # to Kubernetes defaults.
+  effective_overrides = try(local.capabilities.deployment_overrides[0], null)
+
+  pre_stop_seconds = try(local.effective_overrides.pre_stop_seconds, null)
+  grace_seconds    = try(local.effective_overrides.termination_grace_period_seconds, null)
+
+  # Explicit k8s default; don't rely on provider null-handling.
+  effective_grace_seconds = local.grace_seconds == null ? 30 : local.grace_seconds
+
+  rolling_strategy = var.rolling_update_strategy
 }
 
 resource "kubernetes_deployment_v1" "this" {
@@ -29,6 +43,19 @@ resource "kubernetes_deployment_v1" "this" {
       match_labels = local.match_labels
     }
 
+    dynamic "strategy" {
+      for_each = local.rolling_strategy == null ? [] : [local.rolling_strategy]
+
+      content {
+        type = "RollingUpdate"
+
+        rolling_update {
+          max_surge       = try(strategy.value.max_surge, null)
+          max_unavailable = try(strategy.value.max_unavailable, null)
+        }
+      }
+    }
+
     template {
       metadata {
         labels = local.app_labels
@@ -39,8 +66,9 @@ resource "kubernetes_deployment_v1" "this" {
       }
 
       spec {
-        restart_policy       = "Always"
-        service_account_name = kubernetes_service_account_v1.app.metadata[0].name
+        restart_policy                   = "Always"
+        service_account_name             = kubernetes_service_account_v1.app.metadata[0].name
+        termination_grace_period_seconds = local.effective_grace_seconds
 
         dynamic "volume" {
           for_each = local.volumes
@@ -101,6 +129,20 @@ resource "kubernetes_deployment_v1" "this" {
           name  = local.main_container_name
           image = "${local.repository_url}:${local.app_version}"
           args  = local.command
+
+          # Hold the listener open while the load balancer deprograms this endpoint,
+          # preventing "connection termination" / "no healthy upstream" during rollouts.
+          dynamic "lifecycle" {
+            for_each = local.pre_stop_seconds == null || local.pre_stop_seconds == 0 ? [] : [1]
+
+            content {
+              pre_stop {
+                exec {
+                  command = ["/bin/sh", "-c", "sleep ${local.pre_stop_seconds}"]
+                }
+              }
+            }
+          }
 
           security_context {
             capabilities {
