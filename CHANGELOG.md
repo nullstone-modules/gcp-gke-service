@@ -1,3 +1,6 @@
+# 0.10.1 (Jun 08, 2026)
+* Added `GOOGLE_CLOUD_REGION` env var to app.
+
 # 0.10.0 (May 27, 2026)
 * Added `var.rolling_update_strategy` (default `max_surge = "1"`, `max_unavailable = "0"`; set `null` for the Kubernetes default).
 * Configured `preStop` and `terminationGracePeriodSeconds` from an attached Load Balancer's `deployment_overrides` output for zero-downtime rollouts.
