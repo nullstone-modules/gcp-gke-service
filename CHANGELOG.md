@@ -1,3 +1,8 @@
+# 0.11.0 (Jun 19, 2026)
+* Upgraded `nullstone-io/ns` provider to `~> 0.11.0`.
+* Used `gcp_labels` from `data.ns_workspace` to label resources.
+* Used `k8s_labels` from `data.ns_workspace` for Kubernetes resource labels.
+
 # 0.10.1 (Jun 08, 2026)
 * Added `GOOGLE_CLOUD_REGION` env var to app.
 
