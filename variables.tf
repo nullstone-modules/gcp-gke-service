@@ -91,6 +91,17 @@ Set to `null` to omit the strategy and use the Kubernetes default (25% surge / 2
 EOF
 }
 
+variable "termination_grace_seconds" {
+  type        = number
+  default     = 30
+  description = <<EOF
+The number of seconds Kubernetes waits after SIGTERM for the pod to shut down gracefully before force-killing it.
+Increase for apps that need to finish in-flight work on shutdown (e.g. model servers draining long-running requests).
+When an attached capability (e.g. a load balancer) supplies its own termination grace override, the larger of the two values is used.
+By default, this is set to 30 (the Kubernetes default).
+EOF
+}
+
 variable "image_url" {
   type    = string
   default = ""

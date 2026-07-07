@@ -15,10 +15,22 @@ locals {
   pre_stop_seconds = try(local.effective_overrides.pre_stop_seconds, null)
   grace_seconds    = try(local.effective_overrides.termination_grace_period_seconds, null)
 
-  # Explicit k8s default; don't rely on provider null-handling.
-  effective_grace_seconds = local.grace_seconds == null ? 30 : local.grace_seconds
+  # Effective grace is the larger of the app's own setting and any capability override
+  # (e.g. a load balancer's drain window). var.termination_grace_seconds defaults to the
+  # k8s default of 30.
+  effective_grace_seconds = max(var.termination_grace_seconds, local.grace_seconds == null ? 0 : local.grace_seconds)
 
   rolling_strategy = var.rolling_update_strategy
+
+  # Scheduling constraints supplied by capabilities (e.g. gcp-gke-gpu-cores): extended
+  # resource limits merged into the main container, node selectors, taint tolerations, and
+  # topology spread constraints (whose pod selector is injected here from match_labels).
+  cap_resource_limits = { for rl in local.capabilities.resource_limits : rl.name => rl.value }
+  resource_limits     = merge({ cpu = var.cpu, memory = var.memory }, local.cap_resource_limits)
+
+  cap_node_selectors          = { for sel in local.capabilities.node_selectors : sel.name => sel.value }
+  tolerations                 = local.capabilities.tolerations
+  topology_spread_constraints = local.capabilities.topology_spread_constraints
 }
 
 resource "kubernetes_deployment_v1" "this" {
@@ -69,6 +81,35 @@ resource "kubernetes_deployment_v1" "this" {
         restart_policy                   = "Always"
         service_account_name             = kubernetes_service_account_v1.app.metadata[0].name
         termination_grace_period_seconds = local.effective_grace_seconds
+
+        node_selector = length(local.cap_node_selectors) > 0 ? local.cap_node_selectors : null
+
+        dynamic "toleration" {
+          for_each = local.tolerations
+
+          content {
+            key                = toleration.value.key
+            operator           = try(toleration.value.operator, null)
+            value              = try(toleration.value.value, null)
+            effect             = try(toleration.value.effect, null)
+            toleration_seconds = try(toleration.value.toleration_seconds, null)
+          }
+        }
+
+        dynamic "topology_spread_constraint" {
+          for_each = local.topology_spread_constraints
+          iterator = tsc
+
+          content {
+            max_skew           = try(tsc.value.max_skew, 1)
+            topology_key       = tsc.value.topology_key
+            when_unsatisfiable = try(tsc.value.when_unsatisfiable, "ScheduleAnyway")
+
+            label_selector {
+              match_labels = local.match_labels
+            }
+          }
+        }
 
         dynamic "volume" {
           for_each = local.volumes
@@ -156,10 +197,9 @@ resource "kubernetes_deployment_v1" "this" {
               memory = var.memory
             }
 
-            limits = {
-              cpu    = var.cpu
-              memory = var.memory
-            }
+            # cpu/memory plus extended resources (e.g. "nvidia.com/gpu") merged from
+            # capability resource_limits outputs.
+            limits = local.resource_limits
           }
 
           dynamic "startup_probe" {

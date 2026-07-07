@@ -1,3 +1,10 @@
+# 0.12.0 (Jul 06, 2026)
+* Added capability output support for `resource_limits`, `node_selectors`, `tolerations`, and `topology_spread_constraints` (used by GPU capabilities like `gcp-gke-gpu-cores`).
+* Extended resources from capability `resource_limits` (e.g. `nvidia.com/gpu`) are merged into the main container's `resources.limits`.
+* Topology spread constraints from capabilities get the app's pod selector (`match_labels`) injected automatically.
+* Added a PodDisruptionBudget (`minAvailable = replicas - 1`) when `replicas >= 2` so voluntary disruptions can never take down the last ready replica.
+* Added `var.termination_grace_seconds` (default 30). The effective grace period is the larger of this and any capability's `deployment_overrides.termination_grace_period_seconds`.
+
 # 0.11.0 (Jun 19, 2026)
 * Upgraded `nullstone-io/ns` provider to `~> 0.11.0`.
 * Used `gcp_labels` from `data.ns_workspace` to label resources.

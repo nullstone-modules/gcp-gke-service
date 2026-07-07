@@ -53,6 +53,23 @@ When a `Load Balancer` capability is attached, the Deployment additionally confi
 
 With no Load Balancer attached — or when the load balancer disables coordination — pod termination uses Kubernetes defaults.
 
+The app's own `var.termination_grace_seconds` (default 30) sets a floor for the grace period; when a capability also supplies a termination grace override, the larger of the two values wins. Raise it for apps that need time to finish in-flight work on shutdown (e.g. model servers draining long-running requests).
+
+When `replicas >= 2`, the module also emits a PodDisruptionBudget with `minAvailable: replicas - 1` so voluntary disruptions (node drains, node pool upgrades) can never take down the last ready replica.
+
+## GPU workloads
+
+Attach the `gcp-gke-gpu-cores` capability (paired with a `gcp-gke-gpu-node-pool` block) to allocate `nvidia.com/gpu` slots, schedule onto the GPU node pool, and tolerate the GPU taint. Capabilities can contribute `resource_limits`, `node_selectors`, `tolerations`, and `topology_spread_constraints` outputs; topology spread constraints automatically receive this app's pod selector.
+
+For GPU apps on a full node pool (no spare GPU slot for a surge pod), set:
+
+```hcl
+rolling_update_strategy = {
+  max_surge       = "0"
+  max_unavailable = "1"
+}
+```
+
 ### Handling SIGTERM in your application
 
 The `preStop` sleep and grace period only create the window for a graceful shutdown — your application must still stop accepting new work and finish in-flight requests when it receives `SIGTERM`. Examples:

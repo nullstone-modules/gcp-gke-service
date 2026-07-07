@@ -216,5 +216,51 @@ locals {
         termination_grace_period_seconds = null
       }
     ]
+
+    // resource_limits lets a capability merge extended resources (e.g. "nvidia.com/gpu" from a
+    // GPU capability) into the main container's resources.limits. Kubernetes defaults requests
+    // to match limits for extended resources.
+    resource_limits = [
+      {
+        cap_tf_id = "x"
+        name      = "nvidia.com/gpu"
+        value     = "1"
+      }
+    ]
+
+    // node_selectors constrain pod scheduling to nodes carrying these labels
+    // (e.g. a GPU capability targeting its node pool).
+    node_selectors = [
+      {
+        cap_tf_id = "x"
+        name      = ""
+        value     = ""
+      }
+    ]
+
+    // tolerations allow pods to schedule onto tainted nodes (e.g. GKE's automatic
+    // nvidia.com/gpu=present:NoSchedule taint on GPU node pools).
+    tolerations = [
+      {
+        cap_tf_id          = "x"
+        key                = ""
+        operator           = "Equal|Exists"
+        value              = null
+        effect             = "NoSchedule|PreferNoSchedule|NoExecute"
+        toleration_seconds = null
+      }
+    ]
+
+    // topology_spread_constraints spread replicas across failure domains. The pod label
+    // selector is injected by this app (match_labels); capabilities only supply the topology
+    // parameters.
+    topology_spread_constraints = [
+      {
+        cap_tf_id          = "x"
+        max_skew           = 1
+        topology_key       = "kubernetes.io/hostname"
+        when_unsatisfiable = "DoNotSchedule|ScheduleAnyway"
+      }
+    ]
   }
 }
