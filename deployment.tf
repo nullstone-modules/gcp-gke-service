@@ -26,7 +26,11 @@ locals {
   # resource limits merged into the main container, node selectors, taint tolerations, and
   # topology spread constraints (whose pod selector is injected here from match_labels).
   cap_resource_limits = { for rl in local.capabilities.resource_limits : rl.name => rl.value }
-  resource_limits     = merge({ cpu = var.cpu, memory = var.memory }, local.cap_resource_limits)
+  resource_limits = merge(
+    var.max_cpu != "" ? { cpu = var.max_cpu } : {},
+    var.max_memory != "" ? { memory = var.max_memory } : {},
+    local.cap_resource_limits,
+  )
 
   cap_node_selectors          = { for sel in local.capabilities.node_selectors : sel.name => sel.value }
   tolerations                 = local.capabilities.tolerations
@@ -49,7 +53,8 @@ resource "kubernetes_deployment_v1" "this" {
 
   # Pods specs
   spec {
-    replicas = var.replicas
+    replicas               = var.replicas
+    revision_history_limit = 10
 
     selector {
       match_labels = local.match_labels
@@ -197,8 +202,8 @@ resource "kubernetes_deployment_v1" "this" {
               memory = var.memory
             }
 
-            # cpu/memory plus extended resources (e.g. "nvidia.com/gpu") merged from
-            # capability resource_limits outputs.
+            # max_cpu/max_memory plus extended resources (e.g. "nvidia.com/gpu") merged
+            # from capability resource_limits outputs.
             limits = local.resource_limits
           }
 
@@ -375,8 +380,9 @@ resource "kubernetes_deployment_v1" "this" {
             }
           }
 
+          // env vars with plain "value"
           dynamic "env" {
-            for_each = local.all_env_vars
+            for_each = local.env_vars_plain
 
             content {
               name  = env.key
@@ -384,6 +390,67 @@ resource "kubernetes_deployment_v1" "this" {
             }
           }
 
+          // env vars with "{{ k8s.field(apiVersion, fieldPath) }}"
+          dynamic "env" {
+            for_each = local.env_var_field_refs
+            content {
+              name = env.key
+              value_from {
+                field_ref {
+                  api_version = env.value.api_version
+                  field_path  = env.value.field_path
+                }
+              }
+            }
+          }
+
+          // env vars with "{{ k8s.configMap(key, name[, optional]) }}"
+          dynamic "env" {
+            for_each = local.env_var_config_map_refs
+            content {
+              name = env.key
+              value_from {
+                config_map_key_ref {
+                  key      = env.value.key
+                  name     = env.value.name
+                  optional = env.value.optional
+                }
+              }
+            }
+          }
+
+          // env vars with "{{ k8s.resourceField(resource[, container, divisor]) }}"
+          dynamic "env" {
+            for_each = local.env_var_resource_field_refs
+            content {
+              name = env.key
+              value_from {
+                resource_field_ref {
+                  resource       = env.value.resource
+                  container_name = env.value.container
+                  divisor        = env.value.divisor
+                }
+              }
+            }
+          }
+
+          // env vars with "{{ k8s.fileKey(key, path, volumeName) }}"
+          // Requires K8s 1.34+ and EnvFiles feature gate
+          dynamic "env" {
+            for_each = local.env_var_file_key_refs
+            content {
+              name = env.key
+              value_from {
+                file_key_ref {
+                  key         = env.value.key
+                  path        = env.value.path
+                  volume_name = env.value.volume_name
+                }
+              }
+            }
+          }
+
+          // env vars with "{{ secret() }}"
           dynamic "env" {
             for_each = local.all_secret_keys
 

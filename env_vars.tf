@@ -91,9 +91,20 @@ data "ns_secret_keys" "this" {
 }
 
 locals {
-  // all_env_vars contains all environment variables excluding those detected as secrets
+  // env_vars_plain contains environment variables with plain values, excluding:
+  // - secret(...)
+  // - field(...)
+  // - configMap(...)
+  // - resourceField(...)
+  // - fileKey(...)
   // This is a map of name => value
-  all_env_vars = data.ns_env_variables.this.env_variables
+  env_vars_plain = data.ns_env_variables.this.env_variables
+
+  // These are env vars with structured valueFrom
+  env_var_field_refs          = try(data.ns_env_variables.this.field_refs, {})
+  env_var_config_map_refs     = try(data.ns_env_variables.this.config_map_refs, {})
+  env_var_resource_field_refs = try(data.ns_env_variables.this.resource_field_refs, {})
+  env_var_file_key_refs       = try(data.ns_env_variables.this.file_key_refs, {})
 
   // unmanaged_secret_keys are secrets that are not managed by this module
   // This is a list of string for all references where a user specified {{ secret(...) }}

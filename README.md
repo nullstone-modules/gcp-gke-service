@@ -23,6 +23,30 @@ Bridgecrew is the leading fully hosted, cloud-native solution providing continuo
 
 This module uses [GCP GKE](https://cloud.google.com/kubernetes-engine), which is a technology that allows you to run Kubernetes container applications without managing servers. 
 
+## Compute & resources
+
+| Variable | Default | Notes |
+|----------|---------|-------|
+| `cpu` / `memory` | `0.5` / `512Mi` | Pod resource **requests**. Used by the scheduler to place the pod. |
+| `max_cpu` / `max_memory` | unset | Pod resource **limits**. Unset means no limit. |
+| `replicas` | `1` | Static replica count. |
+
+Requests are what the scheduler reserves; limits are the ceiling the container is allowed to consume. Exceeding `max_cpu` throttles the container; exceeding `max_memory` gets it OOMKilled.
+
+> **Changed in 0.13.0.** Earlier versions set limits equal to requests, so `cpu` / `memory` acted as a hard cap. They are now requests only, and an unset `max_cpu` / `max_memory` means *no limit*. Existing apps become burstable on the next apply — they will no longer be throttled or OOMKilled at their request values. To restore the previous behavior, set `max_cpu` and `max_memory` to the same values as `cpu` and `memory`. This matches `aws-eks-app`.
+
+Capabilities can also contribute extended resources (e.g. `nvidia.com/gpu`) through the `resource_limits` output; those merge into the same `resources.limits` map. See [GPU workloads](#gpu-workloads).
+
+## Environment variables
+
+`var.env_vars` is a `map(string)` injected as container env. Values support Nullstone Handlebar interpolation, including Kubernetes-native references:
+
+- `{{ secret(name) }}` — pulls a secret from GCP Secret Manager (see [Secrets](#secrets)).
+- `{{ k8s.field(apiVersion, fieldPath) }}` — `valueFrom.fieldRef`.
+- `{{ k8s.configMap(key, name[, optional]) }}` — `valueFrom.configMapKeyRef`.
+- `{{ k8s.resourceField(resource[, container, divisor]) }}` — `valueFrom.resourceFieldRef`.
+- `{{ k8s.fileKey(key, path, volumeName) }}` — `valueFrom.fileKeyRef`. Requires Kubernetes 1.34+ with the `EnvFiles` feature gate.
+
 ## Network Access
 
 When the service is provisioned, it is placed into private subnets on the connected network.

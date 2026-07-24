@@ -1,3 +1,13 @@
+# 0.13.0 (Jul 24, 2026)
+
+Aligns this module with `aws-eks-app` 0.2.1. See NUL-146.
+
+* **BREAKING:** `var.cpu` and `var.memory` now map to `resources.requests` only. Previously they were also applied as `resources.limits`, making them a hard cap. Containers are now burstable by default and will no longer be CPU-throttled or OOMKilled at their request values. To restore the previous behavior, set the new `var.max_cpu` and `var.max_memory` to the same values as `var.cpu` and `var.memory`.
+* Added `var.max_cpu` and `var.max_memory` (both default unset, meaning no limit) mapping to `resources.limits`. Capability-supplied extended resources (e.g. `nvidia.com/gpu`) still merge into the same map.
+* Added support for structured env var references: `{{ k8s.field(...) }}`, `{{ k8s.configMap(...) }}`, `{{ k8s.resourceField(...) }}`, and `{{ k8s.fileKey(...) }}`. `fileKey` requires Kubernetes 1.34+ with the `EnvFiles` feature gate.
+* Added `private_hosts` and `public_hosts` outputs.
+* Set `revision_history_limit = 10` on the Deployment.
+
 # 0.12.0 (Jul 06, 2026)
 * Added capability output support for `resource_limits`, `node_selectors`, `tolerations`, and `topology_spread_constraints` (used by GPU capabilities like `gcp-gke-gpu-cores`).
 * Extended resources from capability `resource_limits` (e.g. `nvidia.com/gpu`) are merged into the main container's `resources.limits`.

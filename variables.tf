@@ -2,9 +2,21 @@ variable "cpu" {
   type        = string
   default     = "0.5"
   description = <<EOF
-The amount of CPUs to request and limit the service.
-You can also specify milliCPU with a "m" suffix. For example, "0.5" equals "500m".
+The amount of CPU to request for the service (maps to resources.requests.cpu in the k8s deployment spec).
+The k8s scheduler uses this value to decide which node to place the pod on.
+You can specify CPU in cores (e.g. "0.5") or milliCPU (e.g. "500m").
 By default, this is set to 0.5 CPU.
+EOF
+}
+
+variable "max_cpu" {
+  type        = string
+  default     = ""
+  description = <<EOF
+The maximum amount of CPU the service can use (maps to resources.limits.cpu in the k8s deployment spec).
+If the service exceeds this limit, it will be throttled.
+You can specify CPU in cores (e.g. "1") or milliCPU (e.g. "1000m").
+By default, this is unset which means there is no CPU limit.
 EOF
 }
 
@@ -12,10 +24,21 @@ variable "memory" {
   type        = string
   default     = "512Mi"
   description = <<EOF
-The amount of memory to reserve and cap the service.
-If the service exceeds this amount, the service will be killed with exit code 127 representing "Out-of-memory".
-Memory is measured in Mi, or megabytes.
-This means the default is 512 Mi or 0.5 Gi.
+The amount of memory to request for the service (maps to resources.requests.memory in the k8s deployment spec).
+The k8s scheduler uses this value to decide which node to place the pod on.
+Memory is measured in Mi (megabytes) or Gi (gigabytes).
+By default, this is set to 512Mi (0.5Gi).
+EOF
+}
+
+variable "max_memory" {
+  type        = string
+  default     = ""
+  description = <<EOF
+The maximum amount of memory the service can use (maps to resources.limits.memory in the k8s deployment spec).
+If the service exceeds this limit, it will be killed with an OOMKilled status.
+Memory is measured in Mi (megabytes) or Gi (gigabytes).
+By default, this is unset which means there is no memory limit.
 EOF
 }
 

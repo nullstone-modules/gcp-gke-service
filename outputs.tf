@@ -72,3 +72,13 @@ output "public_urls" {
   value       = local.public_urls
   description = "list(string) ||| A list of URLs accessible to the public"
 }
+
+output "private_hosts" {
+  value       = local.private_hosts
+  description = "list(string) ||| A list of Hostnames only accessible inside the network"
+}
+
+output "public_hosts" {
+  value       = local.public_hosts
+  description = "list(string) ||| A list of Hostnames accessible to the public"
+}
