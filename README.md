@@ -49,8 +49,8 @@ Capabilities can also contribute extended resources (e.g. `nvidia.com/gpu`) thro
 
 ## Network Access
 
-When the service is provisioned, it is placed into private subnets on the connected network.
-As a result, the Fargate Service can route to services on the private network *and* is accessible on the private network.
+When the service is provisioned, its pods are scheduled onto nodes in private subnets on the connected network.
+As a result, the GKE service can route to services on the private network *and* is accessible on the private network.
 
 ## Public Access
 
