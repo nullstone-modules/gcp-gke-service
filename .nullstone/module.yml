@@ -4,6 +4,7 @@ friendly_name: Kubernetes GKE App
 description: Creates a GKE app backed by Google Container Registry
 category: app
 subcategory: container
+app_type: generic
 provider_types:
     - gcp
 platform: k8s
