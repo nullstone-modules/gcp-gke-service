@@ -34,13 +34,6 @@ EOF
 }
 
 locals {
-  cap_env_vars = {
-    for item in local.capabilities.env : "${local.cap_env_prefixes[item.cap_tf_id]}${item.name}" => item.value
-  }
-  cap_secrets = {
-    for item in local.capabilities.secrets : "${local.cap_env_prefixes[item.cap_tf_id]}${item.name}" => sensitive(item.value)
-  }
-
   standard_env_vars = tomap({
     NULLSTONE_STACK         = data.ns_workspace.this.stack_name
     NULLSTONE_APP           = data.ns_workspace.this.block_name
@@ -67,59 +60,40 @@ locals {
       "service.version=${local.app_version}",
     ])
   })
-
-  input_env_vars    = merge(local.standard_env_vars, local.google_env_vars, local.otel_env_vars, local.cap_env_vars, var.env_vars)
-  input_secrets     = merge(local.cap_secrets, var.secrets)
-  input_secret_keys = nonsensitive(concat(keys(local.cap_secrets), keys(var.secrets)))
 }
 
-data "ns_env_variables" "this" {
-  input_env_variables = local.input_env_vars
-  input_secrets       = local.input_secrets
+// ns_env_layout classifies secrets using keys only, so the set of secrets is known at plan time
+// - managed_secret_keys: secrets that this module adds to GCP secrets manager
+// - unmanaged_secret_keys: references to existing secrets `{{ secret(...) }}`
+data "ns_env_layout" "this" {
+  platform               = "gcp_gke"
+  standard_keys          = keys(local.standard_env_vars)
+  cloud_keys             = keys(local.google_env_vars)
+  otel_keys              = keys(local.otel_env_vars)
+  capability_env_keys    = [for e in local.capabilities.env : { capability = e.capability, name = e.name }]
+  capability_secret_keys = [for s in local.capabilities.secrets : { capability = s.capability, name = s.name }]
+  capability_prefixes    = local.cap_prefixes
+  user_env               = var.env_vars
+  user_secret_keys       = nonsensitive(keys(var.secrets))
 }
 
-// "existing" adds support for the `secret(...)` syntax
-// This only supports `secret(...)` specified by the user
-data "ns_env_variables" "existing" {
-  input_env_variables = var.env_vars
-  input_secrets       = {}
+data "ns_env_values" "this" {
+  platform            = "gcp_gke"
+  standard            = local.standard_env_vars
+  cloud               = local.google_env_vars
+  otel                = local.otel_env_vars
+  capability_env      = local.capabilities.env
+  capability_secrets  = local.capabilities.secrets
+  capability_prefixes = local.cap_prefixes
+  user_env            = var.env_vars
+  user_secrets        = var.secrets
 }
 
-data "ns_secret_keys" "this" {
-  input_env_variables = var.env_vars
-  input_secret_keys   = local.input_secret_keys
-}
-
-locals {
-  // env_vars_plain contains environment variables with plain values, excluding:
-  // - secret(...)
-  // - field(...)
-  // - configMap(...)
-  // - resourceField(...)
-  // - fileKey(...)
-  // This is a map of name => value
-  env_vars_plain = data.ns_env_variables.this.env_variables
-
-  // These are env vars with structured valueFrom
-  env_var_field_refs          = try(data.ns_env_variables.this.field_refs, {})
-  env_var_config_map_refs     = try(data.ns_env_variables.this.config_map_refs, {})
-  env_var_resource_field_refs = try(data.ns_env_variables.this.resource_field_refs, {})
-  env_var_file_key_refs       = try(data.ns_env_variables.this.file_key_refs, {})
-
-  // unmanaged_secret_keys are secrets that are not managed by this module
-  // This is a list of string for all references where a user specified {{ secret(...) }}
-  // The value of each item is the "..." inside secret()
-  unmanaged_secret_keys = toset([for key, value in data.ns_env_variables.existing.secret_refs : key])
-  // managed_secret_keys is a list of keys for secrets that this module manages
-  // This excludes references to existing secrets {{ secret(...) }}
-  managed_secret_keys = setsubtract(data.ns_secret_keys.this.secret_keys, local.unmanaged_secret_keys)
-  all_secret_keys     = toset(concat(tolist(local.unmanaged_secret_keys), tolist(local.managed_secret_keys)))
-
-  // unmanaged_secrets is a map of name => secret_ref
-  unmanaged_secrets = data.ns_env_variables.existing.secret_refs
-  // managed_secrets is a map of name => secret_ref
-  managed_secrets = { for key in local.managed_secret_keys : key => google_secret_manager_secret.app_secret[key].secret_id }
-  // managed_secret_values is a map of name => value
-  managed_secret_values = data.ns_env_variables.this.secrets
-  all_secrets           = merge(local.unmanaged_secrets, local.managed_secrets)
+// ns_env_platform_data records where each managed secret lives so Nullstone can display the environment
+// The pod reads every secret from the k8s Secret that the `ExternalSecret` syncs from GCP secrets manager
+data "ns_env_platform_data" "this" {
+  values = data.ns_env_values.this.platform_data
+  k8s_secret_refs = {
+    for key in data.ns_env_layout.this.managed_secret_keys : key => { name = local.app_secret_store_name, key = key }
+  }
 }
