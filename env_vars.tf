@@ -49,12 +49,6 @@ locals {
     GOOGLE_CLOUD_PROJECT_NUMBER  = local.project_number
     GOOGLE_SERVICE_ACCOUNT_EMAIL = module.scaffold.app_service_account.email
   })
-  // Kubernetes injects these into every pod; they are reported, not added to the pod spec
-  kubernetes_env_vars = tomap({
-    KUBERNETES_SERVICE_PORT       = "443"
-    KUBERNETES_SERVICE_PORT_HTTPS = "443"
-  })
-  cloud_env_vars = merge(local.google_env_vars, local.kubernetes_env_vars)
   otel_env_vars = local.otel_collector_endpoint == "" ? tomap({}) : tomap({
     OTEL_EXPORTER_OTLP_ENDPOINT = local.otel_collector_endpoint
     OTEL_EXPORTER_OTLP_PROTOCOL = local.otel_collector_protocol
@@ -74,7 +68,7 @@ locals {
 data "ns_env_layout" "this" {
   platform               = "gcp_gke"
   standard_keys          = keys(local.standard_env_vars)
-  cloud_keys             = keys(local.cloud_env_vars)
+  cloud_keys             = keys(local.google_env_vars)
   otel_keys              = keys(local.otel_env_vars)
   capability_env_keys    = [for e in local.capabilities.env : { capability = e.capability, name = e.name }]
   capability_secret_keys = [for s in local.capabilities.secrets : { capability = s.capability, name = s.name }]
@@ -86,7 +80,7 @@ data "ns_env_layout" "this" {
 data "ns_env_values" "this" {
   platform            = "gcp_gke"
   standard            = local.standard_env_vars
-  cloud               = local.cloud_env_vars
+  cloud               = local.google_env_vars
   otel                = local.otel_env_vars
   capability_env      = local.capabilities.env
   capability_secrets  = local.capabilities.secrets
@@ -101,13 +95,5 @@ data "ns_env_platform_data" "this" {
   values = data.ns_env_values.this.platform_data
   k8s_secret_refs = {
     for key in data.ns_env_layout.this.managed_secret_keys : key => { name = local.app_secret_store_name, key = key }
-  }
-}
-
-locals {
-  // A Kubernetes-injected variable reaches the pod spec only when a capability or the user overrides it
-  pod_env_vars = {
-    for k, v in data.ns_env_values.this.env_variables : k => v
-    if !(contains(keys(local.kubernetes_env_vars), k) && data.ns_env_values.this.sources[k] == "cloud")
   }
 }

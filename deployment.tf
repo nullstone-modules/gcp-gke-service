@@ -382,7 +382,7 @@ resource "kubernetes_deployment_v1" "this" {
 
           // env vars with plain "value"
           dynamic "env" {
-            for_each = local.pod_env_vars
+            for_each = data.ns_env_values.this.env_variables
 
             content {
               name  = env.key
