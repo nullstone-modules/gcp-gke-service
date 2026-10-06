@@ -16,7 +16,7 @@ resource "random_string" "resource_suffix" {
 }
 
 locals {
-  tags          = data.ns_workspace.this.gcp_labels
+  labels        = data.ns_workspace.this.gcp_labels
   stack_name    = data.ns_workspace.this.stack_name
   env_name      = data.ns_workspace.this.env_name
   block_name    = data.ns_workspace.this.block_name
@@ -39,10 +39,4 @@ locals {
     "app.kubernetes.io/version" = local.app_version
     "nullstone.io/app"          = local.block_name
   })
-
-  repo_labels = {
-    "nullstone-stack" = data.ns_workspace.this.stack_name
-    "nullstone-block" = data.ns_workspace.this.block_name
-    "nullstone-env"   = data.ns_workspace.this.env_name
-  }
 }

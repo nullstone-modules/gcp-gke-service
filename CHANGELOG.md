@@ -3,6 +3,7 @@
 * Replaced `ns_env_variables` and `ns_secret_keys` with the layered `ns_env_layout`, `ns_env_values`, and `ns_env_platform_data` data sources to aggregate environment variables and secrets.
 * Emitted the `env` platform data record, including the source of each variable and the Kubernetes secret key of each managed secret.
 * Upgraded capability scaffolding to emit `capability` on capability outputs and `cap_prefixes`.
+* Artifact Registry repository now carries the workspace label set from `gcp_labels` (`stack`, `env`, `block`, `owner`, `project`, `application`, `component`, ...) so Nullstone cost attribution can see it. Existing repos are relabeled in place on the next apply; the old `nullstone-stack`, `nullstone-env`, and `nullstone-block` keys are removed.
 
 # 0.13.1 (Jul 24, 2026)
 * Fixed README.md.

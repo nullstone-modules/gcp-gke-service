@@ -3,7 +3,7 @@ resource "google_secret_manager_secret" "app_secret" {
 
   // Valid secret_id: [[a-zA-Z_0-9]+]
   secret_id = lower(replace("${local.resource_name}_${each.value}", "/[^a-zA-Z_0-9]/", "_"))
-  labels    = local.tags
+  labels    = local.labels
 
   replication {
     auto {}
