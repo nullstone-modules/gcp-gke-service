@@ -1,4 +1,4 @@
-# 0.14.0 (Oct 2, 2026)
+# 0.14.0 (Oct 6, 2026)
 * Upgraded `nullstone-io/ns` provider to `~> 0.13.0`.
 * Replaced `ns_env_variables` and `ns_secret_keys` with the layered `ns_env_layout`, `ns_env_values`, and `ns_env_platform_data` data sources to aggregate environment variables and secrets.
 * Emitted the `env` platform data record, including the source of each variable and the Kubernetes secret key of each managed secret.
