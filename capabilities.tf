@@ -22,21 +22,27 @@ locals {
   cap_env_prefixes = tomap({
     x = ""
   })
+  // cap_prefixes is a map indexed by capability name which points to the env_prefix in local.cap_modules
+  cap_prefixes = tomap({
+    x = ""
+  })
 
   capabilities = {
     env = [
       {
-        cap_tf_id = "x"
-        name      = ""
-        value     = ""
+        cap_tf_id  = "x"
+        capability = "x"
+        name       = "EXAMPLE_ENV"
+        value      = ""
       }
     ]
 
     secrets = [
       {
-        cap_tf_id = "x"
-        name      = ""
-        value     = sensitive("")
+        cap_tf_id  = "x"
+        capability = "x"
+        name       = "EXAMPLE_SECRET"
+        value      = sensitive("")
       }
     ]
 
@@ -45,8 +51,9 @@ locals {
     // They will be flattened into list(string) when we output from this module
     private_urls = [
       {
-        cap_tf_id = "x"
-        url       = "http://example"
+        cap_tf_id  = "x"
+        capability = "x"
+        url        = "http://example"
       }
     ]
 
@@ -55,8 +62,9 @@ locals {
     // They will be flattened into list(string) when we output from this module
     public_urls = [
       {
-        cap_tf_id = "x"
-        url       = "https://example.com"
+        cap_tf_id  = "x"
+        capability = "x"
+        url        = "https://example.com"
       }
     ]
 
@@ -65,10 +73,11 @@ locals {
     // See https://docs.nullstone.io/extending/metrics/overview.html
     metrics = [
       {
-        cap_tf_id = "x"
-        name      = ""
-        type      = "usage|usage-percent|duration|generic"
-        unit      = ""
+        cap_tf_id  = "x"
+        capability = "x"
+        name       = ""
+        type       = "usage|usage-percent|duration|generic"
+        unit       = ""
 
         mappings = jsonencode({})
       }
@@ -76,9 +85,10 @@ locals {
 
     volumes = [
       {
-        cap_tf_id = "x"
-        name      = ""
-        empty_dir = jsonencode({})
+        cap_tf_id  = "x"
+        capability = "x"
+        name       = ""
+        empty_dir  = jsonencode({})
         persistent_volume_claim = jsonencode({
           claim_name = ""    // Required
           read_only  = false // Optional
@@ -101,6 +111,7 @@ locals {
     volume_mounts = [
       {
         cap_tf_id         = "x"
+        capability        = "x"
         name              = ""   // Required
         mount_path        = ""   // Required
         sub_path          = null // Path within the volume from which the container's volume should be mounted
@@ -112,6 +123,7 @@ locals {
     startup_probes = [
       {
         cap_tf_id             = "x"
+        capability            = "x"
         initial_delay_seconds = null
         period_seconds        = null
         timeout_seconds       = null
@@ -139,6 +151,7 @@ locals {
     readiness_probes = [
       {
         cap_tf_id             = "x"
+        capability            = "x"
         initial_delay_seconds = null
         period_seconds        = null
         timeout_seconds       = null
@@ -166,6 +179,7 @@ locals {
     liveness_probes = [
       {
         cap_tf_id             = "x"
+        capability            = "x"
         initial_delay_seconds = null
         period_seconds        = null
         timeout_seconds       = null
@@ -192,17 +206,19 @@ locals {
 
     deployment_annotations = [
       {
-        cap_tf_id = "x"
-        name      = ""
-        value     = ""
+        cap_tf_id  = "x"
+        capability = "x"
+        name       = ""
+        value      = ""
       }
     ]
 
     service_annotations = [
       {
-        cap_tf_id = "x"
-        name      = ""
-        value     = ""
+        cap_tf_id  = "x"
+        capability = "x"
+        name       = ""
+        value      = ""
       }
     ]
 
@@ -212,6 +228,7 @@ locals {
     deployment_overrides = [
       {
         cap_tf_id                        = "x"
+        capability                       = "x"
         pre_stop_seconds                 = null
         termination_grace_period_seconds = null
       }
@@ -222,9 +239,10 @@ locals {
     // to match limits for extended resources.
     resource_limits = [
       {
-        cap_tf_id = "x"
-        name      = "nvidia.com/gpu"
-        value     = "1"
+        cap_tf_id  = "x"
+        capability = "x"
+        name       = "nvidia.com/gpu"
+        value      = "1"
       }
     ]
 
@@ -232,9 +250,10 @@ locals {
     // (e.g. a GPU capability targeting its node pool).
     node_selectors = [
       {
-        cap_tf_id = "x"
-        name      = ""
-        value     = ""
+        cap_tf_id  = "x"
+        capability = "x"
+        name       = ""
+        value      = ""
       }
     ]
 
@@ -243,6 +262,7 @@ locals {
     tolerations = [
       {
         cap_tf_id          = "x"
+        capability         = "x"
         key                = ""
         operator           = "Equal|Exists"
         value              = null
@@ -257,6 +277,7 @@ locals {
     topology_spread_constraints = [
       {
         cap_tf_id          = "x"
+        capability         = "x"
         max_skew           = 1
         topology_key       = "kubernetes.io/hostname"
         when_unsatisfiable = "DoNotSchedule|ScheduleAnyway"
